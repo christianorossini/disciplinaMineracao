@@ -1,0 +1,76 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+1. Are there correlations among software metrics?
+
+Base balanceada
+
+```{r}
+library(corrplot)
+
+kernelDsb <- read.csv(file = "/home/christiano/Dropbox/trabalhos/disciplina_mineracao/aulas/04-05/random_undersampling/kernel_data_balanced.csv")
+
+cm <- cor(kernelDsb[,1:27])
+
+corrplot(cm, type = "upper", order = "hclust", 
+         tl.col = "black", tl.srt = 45)
+
+col<- colorRampPalette(c("blue", "white", "red"))(20)
+heatmap(x = cm, col = col, symm = TRUE)
+
+```
+
+
+Base não balanceada
+
+```{r}
+kernelDsu <- read.csv(file = "/home/christiano/Dropbox/trabalhos/disciplina_mineracao/aulas/04-05/unbalanced/kernel_data.csv")
+
+cm <- cor(kernelDsu[,1:27])
+
+corrplot(cm, type = "upper", order = "hclust", 
+         tl.col = "black", tl.srt = 45)
+
+col<- colorRampPalette(c("blue", "white", "red"))(20)
+heatmap(x = cm, col = col, symm = TRUE)
+```
+
+
+
+```{r}
+
+library(ggplot2)
+library(dplyr)
+
+kernelDsbVulnerable <- kernelDsb %>% filter(Affected=="VULNERABLE")
+kernelDsbNeutral <- kernelDsb %>% filter(Affected=="NEUTRAL")
+
+kernelDsbVulnerable$Affected <- NULL
+kernelDsbVulnerable$Fold <- NULL
+kernelDsbNeutral$Affected <- NULL
+kernelDsbNeutral$Fold <- NULL
+
+dfPvalue <- data.frame("metrica"=c(), "pvalue"=c())
+for(column in names(kernelDsbNeutral)){
+  pvalue <- wilcox.test(kernelDsbNonVulnerable[[column]], kernelDsbVulnerable[[column]])$p.value
+  
+  add_row(dfPvalue, metrica=column, pvalue=pvalue)
+  rbind()
+}
+
+
+
+
+
+
+
+
+kernelDsb %>% ggplot(aes(Affected, CountLineBlank)) + geom_boxplot() + scale_y_continuous(trans = "log2")
+
+
+
+
+```
+
