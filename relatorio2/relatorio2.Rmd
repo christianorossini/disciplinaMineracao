@@ -15,3 +15,8 @@ Relatório dos capítulos 3 a 5 do livro
 2. Escolher 3 datasets diferentes do site Kaggle e avaliar a efetividade destas 3 técnicas em termos de Recall, Precision, F-measure, Markedness e Informedness. 
 3. Discutir os resultados.
 
+```{r}
+
+```
+
+
