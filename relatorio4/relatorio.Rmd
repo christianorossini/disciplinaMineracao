@@ -73,7 +73,7 @@ dfPvalueResult
 
 A partir dos valores de p-value encontrados, verifica-se que todas as métricas são menores que 0,05, o que significa que estão na faixa de 95% de certeza de que as métricas são estatisticamente relevantes para a variável "Affected"
 
-### Visualização da distribuição de algumas métricas em boxplot
+### Visualização da distribuição de algumas métricas em boxplot, com transformação logarítmica na base 2
 ```{r}
 kernelDsb %>% ggplot(aes(Affected, AltCountLineCode)) + geom_boxplot() + scale_y_continuous(trans = "log2")
 kernelDsb %>% ggplot(aes(Affected, CountInput)) + geom_boxplot() + scale_y_continuous(trans = "log2")
