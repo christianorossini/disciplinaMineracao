@@ -1,22 +1,175 @@
 ---
 title: "Relatório 2 - capítulos 3 a 5 do livro"
-author: "christiano"
-date: "18 de maio de 2018"
-output: html_document
+author: "Christiano Rossini Martins Costa"
+output: html_notebook
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+source(file = "../mlAlgorithms.R")
+
 ```
 
-Relatório dos capítulos 3 a 5 do livro
+Atividade: Relatório dos capítulos 3 a 5 do livro:
 
 1. Estudar as técnicas de classificação: Nearest Neighbors (KNN); Naive Bayes; Decision Trees. 
-2. Escolher 3 datasets diferentes do site Kaggle e avaliar a efetividade destas 3 técnicas em termos de Recall, Precision, F-measure, Markedness e Informedness. 
+2. Escolher 3 datasets diferentes, avaliar a efetividade das 3 técnicas em termos de Recall, Precision, F-measure, Markedness e Informedness. 
 3. Discutir os resultados.
+
+
+# Desenvolvendo análise de efetividade com KNN 
+
+* Dataset "Iris Species"
+* Objetivo: baseado em algumas medidas de 3 espécies de Iris diferentes, classificar qual espécie está relacionada
+
+## 1. Amostra do dataset  
+```{r}
+dsIris <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/Iris/Iris.csv")
+
+head(dsIris)
+```
+
+```{r}
+summary(dsIris)
+```
+
+```{r}
+str(dsIris)
+```
+
+
+## 2. Transformações e preparação dos dados
+
+```{r}
+#retira o identificador
+dsIris <- dsIris[-1]
+#normaliza os dados
+dsIris_n <- as.data.frame(lapply(dsIris[1:4], normalize))
+# separa as classes
+classesList <- dsIris$Species
+
+```
+
+## 3. Análise de efetividade
+```{r}
+
+set.seed(3)
+folds <- createFolds(dsIris$Species, k =5)
+
+knn_efetividade_by_fold <- executeKNN(dataset=dsIris_n, folds = folds, datasetClasses = classesList)
+knn_efetividade_by_fold <- as.data.frame(knn_efetividade_by_fold)
+
+knn_efetividade <- rowMeans(knn_efetividade_by_fold)
+knn_efetividade <- as.data.frame(knn_efetividade)
+rownames(knn_efetividade) <- c("precision","recall","f-measure")
+
+knn_efetividade
+```
+
+## 4. Discussão dos resultatos
+
+# Desenvolvendo análise de efetividade com Naive Bayes
+
+* Dataset "Breast Cancer"
+* Objetivo: baseado em alguns atributos relacionados a exame de imagem e seu respectivo diagnóstico, classificar se o cancer de mama é maligno ou benigno
+* Atributo alvo: diagnosis (maglino=M, benigno=B)
+
+## 1. Amostra do Dataset
+```{r}
+
+dsBreastCancer <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/breast-cancer/data.csv", stringsAsFactors = TRUE)
+
+head(dsBreastCancer)
+```
+
+```{r}
+str(dsBreastCancer)
+```
+
+## 2. Transformações e preparação dos dados
+
+```{r}
+#retira o identificador
+dsBreastCancer <- dsBreastCancer[c(-1)]
+# separa as classes
+classesList <- dsBreastCancer$diagnosis
+#retira as classes
+dsBreastCancer <- dsBreastCancer[-1] 
+
+# Facilitando o calculo de efetividade: transforma B=TRUE, M=FALSE
+## benigno=true, maligno=false
+classesList <- classesList=="B"
+```
+
+## 3. Análise de efetividade
+
 
 ```{r}
 
+naiveb_efetividade_by_fold <- executeNaiveBayes(dataset=dsBreastCancer, folds = folds, datasetClasses = classesList)
+naiveb_efetividade_by_fold <- as.data.frame(naiveb_efetividade_by_fold)
+
+naiveb_efetividade <- rowMeans(naiveb_efetividade_by_fold)
+naiveb_efetividade <- as.data.frame(naiveb_efetividade)
+rownames(naiveb_efetividade) <- c("precision","recall","f-measure", "informedness","markedness")
+
+naiveb_efetividade
+
+```
+
+## 4. Discussão dos resultatos
+
+
+# Desenvolvendo análise de efetividade com Decision Tree
+
+* Dataset "Mushroom Classification"
+* Objetivo: classificar se o cogumelo é seguro para comer ou se é venenoso
+* Atributo alvo: class (edible=e, poisonous=p)
+
+## 1. Amostra do dataset
+```{r}
+
+dsMushroom <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/mushrooms.csv")
+
+head(dsMushroom)
+```
+
+```{r}
+str(dsMushroom)
 ```
 
 
+## 2. Transformações e preparação dos dados
+
+```{r}
+#retira o o atributo veil.type, pois só tem 1 nível
+dsMushroom <- dsMushroom[-17]
+
+# separa as classes
+classesList <- dsMushroom$class
+#retira as classes do dataset principal
+dsMushroom <- dsMushroom[-1] 
+
+# Facilitando o calculo de efetividade: transforma e=TRUE, p=FALSE
+## comestível=true, não comestível=false
+classesList <- classesList=="e"
+```
+
+
+## 3. Análise de efetividade
+
+```{r}
+folds <- createFolds(classesList, k =20)
+
+dectree_efetividade_by_folds <- executeC50(dataset=dsMushroom, folds = folds, datasetClasses = classesList)
+dectree_efetividade_by_folds <- as.data.frame(dectree_efetividade_by_folds)
+
+dectree_efetividade <- rowMeans(dectree_efetividade_by_folds)
+dectree_efetividade <- as.data.frame(dectree_efetividade)
+rownames(dectree_efetividade) <- c("precision","recall","f-measure", "informedness","markedness")
+
+dectree_efetividade
+```
+
+## 4. Discussão dos resultatos

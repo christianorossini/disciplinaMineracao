@@ -1,0 +1,50 @@
+---
+title: "Relatório 1 - trabalhar as questões de pesquisa com o R"
+author: "Christiano Rossini Martins Costa"
+date: "20 de maio de 2018"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+
+```
+
+
+
+## RQ1
+
+```{r}
+
+dataset <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/world-happines/2015.csv", stringsAsFactors = FALSE)
+
+dataset$Region <- factor(dataset$Region)
+dataset$Country <- factor(dataset$Country)
+
+str(dataset)
+
+summary(dataset)
+
+```
+
+## RQ2
+
+```{r}
+
+```
+
+## RQ3
+
+```{r}
+
+```
+
+## RQ4
+
+```{r}
+
+```

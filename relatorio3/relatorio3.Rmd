@@ -1,0 +1,69 @@
+---
+title: "Relatório 3 - capítulos 6 a 9 do livro"
+author: "christiano Rossini Martins Costa"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Atividade: Relatório dos capítulos 6 a 9 do livro:
+
+1. Estudar as técnicas Regression Methods, Black Box Methods (Support Vector Machines), Association Rules e k-means. 
+2. Escolher 3 datasets diferentes e avaliar a efetividade destas técnicas em termos de Recall, Precision, F-measure, Markedness e Informedness. 
+3. Discutir os resultados.
+
+
+# Usando dataset "Insurance plan - predicting medical expenses""
+
+## 1. Amostra do dataset  
+```{r}
+source(file = "../mlAlgorithms.R")
+
+
+dataset <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/insurance.csv")
+
+head(dataset)
+```
+
+```{r}
+summary(dataset)
+```
+
+```{r}
+str(dataset)
+```
+
+
+## 2. Transformações e preparação dos dados
+
+```{r}
+library(psych)
+
+cor(dataset[c("age", "bmi", "children", "charges")])
+
+pairs(dataset[c("age", "bmi", "children", "charges")])
+
+pairs.panels(dataset[c("age", "bmi", "children", "charges")])
+
+```
+
+## 3. Desenvolvendo análise de efetividade com KNN
+```{r}
+
+set.seed(3)
+folds <- createFolds(dsBreastCancer$Species, k =5)
+
+knn_efetividade_by_fold <- executeKNN(dataset=dsBreastCancer_n, folds = folds, datasetClasses = classesList)
+knn_efetividade_by_fold <- as.data.frame(knn_efetividade_by_fold)
+
+knn_efetividade <- rowMeans(knn_efetividade_by_fold)
+knn_efetividade <- as.data.frame(knn_efetividade)
+rownames(knn_efetividade) <- c("precision","recall","f-measure")
+
+knn_efetividade
+```
+
+***** INSERIR COMENTÁRIO
+
