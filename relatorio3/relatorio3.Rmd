@@ -1,6 +1,6 @@
 ---
 title: "Relatório 3 - capítulos 6 a 9 do livro"
-author: "christiano Rossini Martins Costa"
+author: "Christiano Rossini Martins Costa"
 output: html_notebook
 ---
 
@@ -10,21 +10,47 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Atividade: Relatório dos capítulos 6 a 9 do livro:
 
-1. Estudar as técnicas Regression Methods, Black Box Methods (Support Vector Machines), Association Rules e k-means. 
+1. Estudar as técnicas Regression Methods, Black Box Methods (Support Vector Machines) e k-means. 
 2. Escolher 3 datasets diferentes e avaliar a efetividade destas técnicas em termos de Recall, Precision, F-measure, Markedness e Informedness. 
 3. Discutir os resultados.
 
 
-# Usando dataset "Insurance plan - predicting medical expenses""
+# 1.Desenvolvendo análise de efetividade com Linear Regression
 
-## 1. Amostra do dataset  
+* Dataset "Titanic"
+* Objetivo: dado um conjunto de informções de cada passageiro do naufrágio do navio, fazer predição de sobreviventes
+* Atributo alvo: survived
+
+
+## 1.1 Amostra do dataset  
 ```{r}
 source(file = "../mlAlgorithms.R")
 
+test <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/titanic/test.csv", stringsAsFactors = FALSE)
+gender_submission <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/titanic/gender_submission.csv", stringsAsFactors = FALSE)
+train <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/titanic/train.csv", stringsAsFactors = FALSE)
 
-dataset <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/insurance.csv")
+test$Pclass <- as.factor(test$Pclass)
+test$Sex <- as.factor(test$Sex)
+test$Embarked <- as.factor(test$Embarked)
+train$Pclass <- as.factor(train$Pclass)
+train$Sex <- as.factor(train$Sex)
+train$Embarked <- as.factor(train$Embarked)
 
-head(dataset)
+survived <- train[,1:2]
+survived <- rbind(survived, gender_submission)
+survived <- survived[,-1]
+
+# retira o atributo alvo
+dataset <- train[,-2]
+
+#junta o dataset train com o test
+dataset <- rbind(dataset,test)
+#insere o atributo alvo no fim do dataset
+dataset <- cbind(dataset,survived=survived)
+
+dataset
+
 ```
 
 ```{r}
@@ -32,38 +58,56 @@ summary(dataset)
 ```
 
 ```{r}
-str(dataset)
+
+
 ```
 
 
-## 2. Transformações e preparação dos dados
+## 1.2 Transformações e preparação dos dados
 
 ```{r}
-library(psych)
 
-cor(dataset[c("age", "bmi", "children", "charges")])
+#retira atributos de natureza única: passengerId, name, ticket,
+dataset <- dataset[,c(-1,-3,-8)]
+#atributo cabin tem muitos valores nulos. será excluído também
+dataset <- dataset[,-7]
 
-pairs(dataset[c("age", "bmi", "children", "charges")])
+# atribui a média para atributos com células vazias
+dataset[is.na(dataset$Age),]$Age <- median(dataset$Age, na.rm = TRUE)
+dataset[is.na(dataset$Fare),]$Fare <- median(dataset$Fare, na.rm = TRUE)
+#atribui a categoria de maior frequencia aos campos vazios em Embarked
+dataset[dataset$Embarked=='',]$Embarked <- 'S'
 
-pairs.panels(dataset[c("age", "bmi", "children", "charges")])
-
+summary(dataset)
 ```
 
-## 3. Desenvolvendo análise de efetividade com KNN
+## 1.3 Análise de efetividade
 ```{r}
 
 set.seed(3)
-folds <- createFolds(dsBreastCancer$Species, k =5)
+folds <- createFolds(dataset$survived, k =5)
 
-knn_efetividade_by_fold <- executeKNN(dataset=dsBreastCancer_n, folds = folds, datasetClasses = classesList)
-knn_efetividade_by_fold <- as.data.frame(knn_efetividade_by_fold)
+lm_efetividade_by_fold <- executeLm(dataset=dataset, folds = folds)
+lm_efetividade_by_fold <- as.data.frame(lm_efetividade_by_fold)
 
-knn_efetividade <- rowMeans(knn_efetividade_by_fold)
-knn_efetividade <- as.data.frame(knn_efetividade)
-rownames(knn_efetividade) <- c("precision","recall","f-measure")
+lm_efetividade <- rowMeans(lm_efetividade_by_fold)
+lm_efetividade <- as.data.frame(lm_efetividade)
+rownames(lm_efetividade) <- c("precision","recall","f-measure","infomedness","markdness")
 
-knn_efetividade
+lm_efetividade
 ```
 
-***** INSERIR COMENTÁRIO
+## 1.4 Discussão dos resultados
+
+
+
+# 2.Desenvolvendo análise de efetividade com Support Vector Machines
+
+* Dataset "Titanic"
+* Objetivo: dado um conjunto de informções de cada passageiro do naufrágio do navio, fazer predição de sobreviventes
+* Atributo alvo: survived
+
+
+
+
 

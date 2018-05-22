@@ -216,17 +216,30 @@ executeKNN <- function(dataset, folds, datasetClasses){
   })
 }
 
-executeLm <- function(dataset, folds, datasetClasses, classLabel){
+executeLm <- function(dataset, folds, datasetClasses){
   results <- lapply(folds, function(x) {
     train <- dataset[-x, ]
-    train_classes <- datasetClasses[-x]
     test <- dataset[x, ]
-    test_classes <- datasetClasses[x]
     
-    model <- lm(train[,classLabel] ~ ., data = train)
+    # model <- lm(train$diagnosis ~ ., data = train)
+    # pred <- predict(model, test)
+    # 
+    # pred <- ifelse(pred>mean(pred),TRUE,FALSE)
+    # test$diagnosis <- as.logical(test$diagnosis)
+    # 
+    # results <- getMeasuresBi(test$diagnosis,pred)
+    # 
+    
+    model <- lm(train$survived ~ ., data = train)
     pred <- predict(model, test)
     
-    results <- getMeasues(predicted = pred, expected = test_classes)
+    pred <- normalize(pred)
+    
+    #se a predição estiver acima da média, considera survived=TRUE
+    pred <- ifelse(pred>0.6,TRUE,FALSE)
+    test$survived <- as.logical(test$survived)
+    
+    results <- getMeasuresBi(test$survived,pred)
     
     return(results)
   })
@@ -243,26 +256,26 @@ normalize <- function(x) {
 
 ################################# teste ########################################################
 
-dsIris <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/Iris/Iris.csv")
-
-#retira o identificador
-dsIris <- dsIris[-1]
-#normaliza os dados
-dsIris_n <- as.data.frame(lapply(dsIris[1:4], normalize))
-# separa as classes
-classesList <- dsIris$Species
-
-set.seed(3)
-folds <- createFolds(dsIris$Species, k =5)
-
-knn_efetividade_by_fold <- executeKNN(dataset=dsIris_n, folds = folds, datasetClasses = classesList)
-knn_efetividade_by_fold <- as.data.frame(knn_efetividade_by_fold)
-
-knn_efetividade <- rowMeans(knn_efetividade_by_fold)
-knn_efetividade <- as.data.frame(knn_efetividade)
-rownames(knn_efetividade) <- c("precision","recall","f-measure","informedness","markedness")
-
-knn_efetividade
+# dsIris <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/Iris/Iris.csv")
+# 
+# #retira o identificador
+# dsIris <- dsIris[-1]
+# #normaliza os dados
+# dsIris_n <- as.data.frame(lapply(dsIris[1:4], normalize))
+# # separa as classes
+# classesList <- dsIris$Species
+# 
+# set.seed(3)
+# folds <- createFolds(dsIris$Species, k =5)
+# 
+# knn_efetividade_by_fold <- executeKNN(dataset=dsIris_n, folds = folds, datasetClasses = classesList)
+# knn_efetividade_by_fold <- as.data.frame(knn_efetividade_by_fold)
+# 
+# knn_efetividade <- rowMeans(knn_efetividade_by_fold)
+# knn_efetividade <- as.data.frame(knn_efetividade)
+# rownames(knn_efetividade) <- c("precision","recall","f-measure","informedness","markedness")
+# 
+# knn_efetividade
 
 
 # dsBreastCancer <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/breast-cancer/data.csv", stringsAsFactors = TRUE)
@@ -341,6 +354,69 @@ knn_efetividade
 # rownames(lm_efetividade) <- c("precision","recall","f-measure")
 
 
+test <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/titanic/test.csv", stringsAsFactors = FALSE)
+gender_submission <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/titanic/gender_submission.csv", stringsAsFactors = FALSE)
+train <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/titanic/train.csv", stringsAsFactors = FALSE)
 
+test$Pclass <- as.factor(test$Pclass)
+test$Sex <- as.factor(test$Sex)
+test$Embarked <- as.factor(test$Embarked)
+train$Pclass <- as.factor(train$Pclass)
+train$Sex <- as.factor(train$Sex)
+train$Embarked <- as.factor(train$Embarked)
+
+survived <- train[,1:2]
+survived <- rbind(survived, gender_submission)
+survived <- survived[,-1]
+
+# retira o atributo alvo
+dataset <- train[,-2]
+
+#insere o atributo alvo no fim do dataset
+dataset <- rbind(dataset,test)
+dataset <- cbind(dataset,survived=survived)
+
+#retira atributos de natureza única: passengerId, name, ticket,
+dataset <- dataset[,c(-1,-3,-8)]
+#atributo cabin tem muitos valores nulos. será excluído também
+dataset <- dataset[,-7]
+
+# atribui a média para atributos com células vazias
+dataset[is.na(dataset$Age),]$Age <- median(dataset$Age, na.rm = TRUE)
+dataset[is.na(dataset$Fare),]$Fare <- median(dataset$Fare, na.rm = TRUE)
+#atribui a categoria de maior frequencia aos campos vazios em Embarked
+dataset[dataset$Embarked=='',]$Embarked <- 'S'
+
+set.seed(3)
+folds <- createFolds(dataset$survived, k =5)
+
+lm_efetividade_by_fold <- executeLm(dataset=dataset, folds = folds)
+lm_efetividade_by_fold <- as.data.frame(lm_efetividade_by_fold)
+
+lm_efetividade <- rowMeans(lm_efetividade_by_fold)
+lm_efetividade <- as.data.frame(lm_efetividade)
+rownames(lm_efetividade) <- c("precision","recall","f-measure","infomedness","markdness")
+
+lm_efetividade
+
+
+# dataset <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/breast-cancer/data.csv", stringsAsFactors = TRUE)
+# 
+# #retira o identificador
+# dataset <- dataset[c(-1)]
+# 
+# dataset$diagnosis <- as.numeric(dataset$diagnosis=="B")
+# 
+# set.seed(3)
+# folds <- createFolds(dataset$diagnosis, k =5)
+# 
+# lm_efetividade_by_fold <- executeLm(dataset=dataset, folds = folds)
+# lm_efetividade_by_fold <- as.data.frame(lm_efetividade_by_fold)
+# 
+# lm_efetividade <- rowMeans(lm_efetividade_by_fold)
+# lm_efetividade <- as.data.frame(lm_efetividade)
+# rownames(lm_efetividade) <- c("precision","recall","f-measure","infomedness","markdness")
+# 
+# lm_efetividade
 
 
