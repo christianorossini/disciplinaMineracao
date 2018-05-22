@@ -61,13 +61,39 @@ getMeasues <- function(predicted, expected, positive.class="1") {
   recall <- diag(cm) / rowSums(cm)
   f1 <-  ifelse(precision + recall == 0, 0, 2 * precision * recall / (precision + recall))
   
+  informedness <- c(informedness(cm[1,1],
+                                 cm[1,2]+cm[1,3],
+                                 cm[2,2]+cm[3,3],
+                                 cm[2,1]+cm[3,1]),
+                    informedness(cm[2,2],
+                                 cm[2,1]+cm[2,3],
+                                 cm[1,1]+cm[3,3],
+                                 cm[1,2]+cm[3,2]),
+                    informedness(cm[3,3],
+                                 cm[3,1]+cm[3,2],
+                                 cm[1,1]+cm[2,2],
+                                 cm[1,3]+cm[2,3]))
+  
+  markedness <- c(markedness(cm[1,1],
+                             cm[2,1]+cm[3,1],
+                             cm[2,2]+cm[3,3],
+                             cm[1,2]+cm[1,3]),
+                  markedness(cm[2,2],
+                             cm[1,2]+cm[3,2],
+                             cm[1,1]+cm[3,3],
+                             cm[2,1]+cm[2,3]),
+                  markedness(cm[3,3],
+                             cm[1,3]+cm[2,3],
+                             cm[1,1]+cm[2,2],
+                             cm[3,1]+cm[3,2]))
+  
   #Assuming that F1 is zero when it's not possible compute it
   f1[is.na(f1)] <- 0
   
   #Binary F1 or Multi-class macro-averaged F1
   ifelse(nlevels(expected) == 2, f1[positive.class], mean(f1))
   
-  return(c(mean(precision), mean(recall), mean(f1)))
+  return(c(mean(precision), mean(recall), mean(f1), mean(informedness), mean(markedness)))
 }
 
 getMeasuresBi <- function(test, pred){
@@ -222,18 +248,19 @@ dsIris <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/data
 #retira o identificador
 dsIris <- dsIris[-1]
 #normaliza os dados
-dsBreastCancer_n <- as.data.frame(lapply(dsBreastCancer[1:4], normalize))
+dsIris_n <- as.data.frame(lapply(dsIris[1:4], normalize))
+# separa as classes
+classesList <- dsIris$Species
 
-classesList <- dsBreastCancer[5]
 set.seed(3)
-folds <- createFolds(dsBreastCancer$Species, k =5)
+folds <- createFolds(dsIris$Species, k =5)
 
-knn_efetividade_by_fold <- executeKNN(dataset=dsBreastCancer_n, folds = folds, datasetClasses = classesList)
+knn_efetividade_by_fold <- executeKNN(dataset=dsIris_n, folds = folds, datasetClasses = classesList)
 knn_efetividade_by_fold <- as.data.frame(knn_efetividade_by_fold)
 
 knn_efetividade <- rowMeans(knn_efetividade_by_fold)
 knn_efetividade <- as.data.frame(knn_efetividade)
-rownames(knn_efetividade) <- c("precision","recall","f-measure")
+rownames(knn_efetividade) <- c("precision","recall","f-measure","informedness","markedness")
 
 knn_efetividade
 

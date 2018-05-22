@@ -18,12 +18,12 @@ Atividade: Relatório dos capítulos 3 a 5 do livro:
 3. Discutir os resultados.
 
 
-# Desenvolvendo análise de efetividade com KNN 
+# 1.Desenvolvendo análise de efetividade com KNN 
 
 * Dataset "Iris Species"
-* Objetivo: baseado em algumas medidas de 3 espécies de Iris diferentes, classificar qual espécie está relacionada
+* Objetivo: baseado em algumas medidas de 3 espécies de Iris diferentes, classificar qual é espécie está relacionada
 
-## 1. Amostra do dataset  
+## 1.1 Amostra do dataset  
 ```{r}
 dsIris <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/Iris/Iris.csv")
 
@@ -39,7 +39,7 @@ str(dsIris)
 ```
 
 
-## 2. Transformações e preparação dos dados
+## 1.2 Transformações e preparação dos dados
 
 ```{r}
 #retira o identificador
@@ -51,7 +51,7 @@ classesList <- dsIris$Species
 
 ```
 
-## 3. Análise de efetividade
+## 1.3 Análise de efetividade
 ```{r}
 
 set.seed(3)
@@ -62,20 +62,20 @@ knn_efetividade_by_fold <- as.data.frame(knn_efetividade_by_fold)
 
 knn_efetividade <- rowMeans(knn_efetividade_by_fold)
 knn_efetividade <- as.data.frame(knn_efetividade)
-rownames(knn_efetividade) <- c("precision","recall","f-measure")
+rownames(knn_efetividade) <- c("precision","recall","f-measure","informedness","markedness")
 
 knn_efetividade
 ```
 
-## 4. Discussão dos resultatos
+## 1.4 Discussão dos resultatos
 
-# Desenvolvendo análise de efetividade com Naive Bayes
+# 2. Desenvolvendo análise de efetividade com Naive Bayes
 
 * Dataset "Breast Cancer"
 * Objetivo: baseado em alguns atributos relacionados a exame de imagem e seu respectivo diagnóstico, classificar se o cancer de mama é maligno ou benigno
 * Atributo alvo: diagnosis (maglino=M, benigno=B)
 
-## 1. Amostra do Dataset
+## 2.1 Amostra do Dataset
 ```{r}
 
 dsBreastCancer <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/breast-cancer/data.csv", stringsAsFactors = TRUE)
@@ -87,7 +87,7 @@ head(dsBreastCancer)
 str(dsBreastCancer)
 ```
 
-## 2. Transformações e preparação dos dados
+## 2.2 Transformações e preparação dos dados
 
 ```{r}
 #retira o identificador
@@ -102,7 +102,7 @@ dsBreastCancer <- dsBreastCancer[-1]
 classesList <- classesList=="B"
 ```
 
-## 3. Análise de efetividade
+## 2.3 Análise de efetividade
 
 
 ```{r}
@@ -118,16 +118,16 @@ naiveb_efetividade
 
 ```
 
-## 4. Discussão dos resultatos
+## 2.4 Discussão dos resultatos
 
 
-# Desenvolvendo análise de efetividade com Decision Tree
+# 3.Desenvolvendo análise de efetividade com Decision Tree
 
 * Dataset "Mushroom Classification"
 * Objetivo: classificar se o cogumelo é seguro para comer ou se é venenoso
 * Atributo alvo: class (edible=e, poisonous=p)
 
-## 1. Amostra do dataset
+## 3.1 Amostra do dataset
 ```{r}
 
 dsMushroom <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/mushrooms.csv")
@@ -140,7 +140,7 @@ str(dsMushroom)
 ```
 
 
-## 2. Transformações e preparação dos dados
+## 3.2 Transformações e preparação dos dados
 
 ```{r}
 #retira o o atributo veil.type, pois só tem 1 nível
@@ -157,7 +157,7 @@ classesList <- classesList=="e"
 ```
 
 
-## 3. Análise de efetividade
+## 3.3 Análise de efetividade
 
 ```{r}
 folds <- createFolds(classesList, k =20)
@@ -172,4 +172,4 @@ rownames(dectree_efetividade) <- c("precision","recall","f-measure", "informedne
 dectree_efetividade
 ```
 
-## 4. Discussão dos resultatos
+## 3.4 Discussão dos resultatos
