@@ -130,7 +130,7 @@ dsBreastCancer <- dsBreastCancer[c(-1)]
 ## 2.3 Análise de efetividade com 4 diferentes kernels
 
 
-```{r include=FALSE}
+```{r}
 
 set.seed(3)
 folds <- createFolds(dsBreastCancer$diagnosis, k =5)
