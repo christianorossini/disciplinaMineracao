@@ -14,13 +14,24 @@ Dataset: World Happiness Report
 Link: https://www.kaggle.com/unsdsn/world-happiness
 
 
-## RQ1
+## RQ1 Quais países que apresentaram as melhores evoluções e involuções entre 2015 e 2017
 
 ```{r}
 
 dataset2015 <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/world-happines/2015.csv", stringsAsFactors = FALSE)
 dataset2016 <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/world-happines/2016.csv", stringsAsFactors = FALSE)
 dataset2017 <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/world-happines/2017.csv", stringsAsFactors = FALSE)
+
+dataset2015[,"ano"] <- 2015
+dataset2016[,"ano"] <- 2016
+dataset2017[,"ano"] <- 2017
+
+names(dataset2015)
+names(dataset2016)
+names(dataset2017)
+
+full_dataset <- rbind(dataset2015, dataset2016)
+full_dataset <- rbind(full_dataset, dataset2017)
 
 head(dataset)
 
@@ -53,7 +64,7 @@ str(dataset)
 ```
 
 
-## RQ2
+## RQ2 Qual o rank dos países obtiveram a média dos melhores scores de felicidade
 
 ```{r}
 

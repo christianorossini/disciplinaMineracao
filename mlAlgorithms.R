@@ -261,17 +261,17 @@ normalize <- function(x) {
 
 ################################# teste ########################################################
 
-dsIris <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/Iris/Iris.csv")
-
-#retira o identificador
-dsIris <- dsIris[-1]
-#normaliza os dados
-dsIris_n <- as.data.frame(lapply(dsIris[1:4], normalize))
-# separa as classes
-classesList <- dsIris$Species
-
-set.seed(3)
-folds <- createFolds(dsIris$Species, k =5)
+# dsIris <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/Iris/Iris.csv")
+# 
+# #retira o identificador
+# dsIris <- dsIris[-1]
+# #normaliza os dados
+# dsIris_n <- as.data.frame(lapply(dsIris[1:4], normalize))
+# # separa as classes
+# classesList <- dsIris$Species
+# 
+# set.seed(3)
+# folds <- createFolds(dsIris$Species, k =5)
 
 
 # qtd_k <- c(3,10,20,30,60,100)
@@ -316,42 +316,42 @@ folds <- createFolds(dsIris$Species, k =5)
 # naiveb_efetividade
 
 
- dsMushroom <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/mushrooms.csv")
- #retira o o atributo veil.type, pois só tem 1 nível
- dsMushroom <- dsMushroom[-17]
- 
- # separa as classes
- classesList <- dsMushroom$class
- #retira as classes do dataset principal
- dsMushroom <- dsMushroom[-1] 
- 
- # Facilitando o calculo de efetividade: transforma e=TRUE, p=FALSE
- ## comestível=true, não comestível=false
- classesList <- classesList=="e"
-
- set.seed(3)
- # definição de 20 folds
- folds <- createFolds(classesList, k =20)
- 
- qtd_t <- c(1,3)
- 
- all_dectree_efectiveness <- data.frame(c(0,0,0,0,0))
- 
- for(qtd in qtd_t){
-   dectree_efetividade_by_folds <- executeC50(dataset=dsMushroom, folds = folds, datasetClasses = classesList, t = qtd)
-   dectree_efetividade_by_folds <- as.data.frame(dectree_efetividade_by_folds)
-   
-   dectree_efetividade <- rowMeans(dectree_efetividade_by_folds)
-   dectree_efetividade <- as.data.frame(dectree_efetividade)
-   rownames(dectree_efetividade) <- c("precision","recall","f-measure", "informedness","markedness")
-   
-   all_dectree_efectiveness <- cbind(all_dectree_efectiveness, dectree_efetividade)
- }  
- 
- all_dectree_efectiveness <- all_dectree_efectiveness[,-1]
- colnames(all_dectree_efectiveness) <- lapply(qtd_t, function(x){return(paste("k=",x))}) 
- 
- all_dectree_efectiveness
+ # dsMushroom <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/mushrooms.csv")
+ # #retira o o atributo veil.type, pois só tem 1 nível
+ # dsMushroom <- dsMushroom[-17]
+ # 
+ # # separa as classes
+ # classesList <- dsMushroom$class
+ # #retira as classes do dataset principal
+ # dsMushroom <- dsMushroom[-1] 
+ # 
+ # # Facilitando o calculo de efetividade: transforma e=TRUE, p=FALSE
+ # ## comestível=true, não comestível=false
+ # classesList <- classesList=="e"
+ # 
+ # set.seed(3)
+ # # definição de 20 folds
+ # folds <- createFolds(classesList, k =20)
+ # 
+ # qtd_t <- c(1,3)
+ # 
+ # all_dectree_efectiveness <- data.frame(c(0,0,0,0,0))
+ # 
+ # for(qtd in qtd_t){
+ #   dectree_efetividade_by_folds <- executeC50(dataset=dsMushroom, folds = folds, datasetClasses = classesList, t = qtd)
+ #   dectree_efetividade_by_folds <- as.data.frame(dectree_efetividade_by_folds)
+ #   
+ #   dectree_efetividade <- rowMeans(dectree_efetividade_by_folds)
+ #   dectree_efetividade <- as.data.frame(dectree_efetividade)
+ #   rownames(dectree_efetividade) <- c("precision","recall","f-measure", "informedness","markedness")
+ #   
+ #   all_dectree_efectiveness <- cbind(all_dectree_efectiveness, dectree_efetividade)
+ # }  
+ # 
+ # all_dectree_efectiveness <- all_dectree_efectiveness[,-1]
+ # colnames(all_dectree_efectiveness) <- lapply(qtd_t, function(x){return(paste("k=",x))}) 
+ # 
+ # all_dectree_efectiveness
 
  
  
