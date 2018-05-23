@@ -178,19 +178,47 @@ $(document).ready(function () {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
+<p>Dataset: World Happiness Report Link: <a href="https://www.kaggle.com/unsdsn/world-happiness" class="uri">https://www.kaggle.com/unsdsn/world-happiness</a></p>
 <div id="rq1" class="section level2">
 <h2>RQ1</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0YXNldCA8LSByZWFkLmNzdihcIi9ob21lL2NocmlzdGlhbm8vRHJvcGJveC90cmFiYWxob3MvZGlzY2lwbGluYV9taW5lcmFjYW8vZGF0YXNldHMvZGF0YXNldHNfbWVub3Jlcy93b3JsZC1oYXBwaW5lcy8yMDE1LmNzdlwiLCBzdHJpbmdzQXNGYWN0b3JzID0gRkFMU0UpXG5kYXRhc2V0JFJlZ2lvbiA8LSBmYWN0b3IoZGF0YXNldCRSZWdpb24pXG5kYXRhc2V0JENvdW50cnkgPC0gZmFjdG9yKGRhdGFzZXQkQ291bnRyeSlcbnN0cihkYXRhc2V0KVxuXG5gYGAifQ== -->
-<pre class="r"><code>dataset &lt;- read.csv(&quot;/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/world-happines/2015.csv&quot;, stringsAsFactors = FALSE)
-dataset$Region &lt;- factor(dataset$Region)
-dataset$Country &lt;- factor(dataset$Country)
-str(dataset)
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MTIsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFBNjFVYjJ4VFZSUi82NytOMmczTW9wREJhaE9ERVJhZWcwamNNSG9lNlFZSXpPZ0tXS0pmTHE4WCtsejdicm52dlcyZG1oa2phRFFhTVpFYUpzSEJVQ0JML0JNTTR3c3hPb05SeHd6YWdkT2hRbG1JbEdGbXU1bUp4ZnZxdTgvWnhHODJ1YjNubkh0KzU1NzdPK2U4MXFid0NtL1lLd2lDUTNDNlhJTER5VVNYZy8yVkNTNWhqcmwzQ29Lem1nayt0dWF4NWJFT2JnbDFLSG9YcGpHa1JpeFQrVU15bnEwMllUV09hSnVsZWg0bXRBTWx1UlpFS29vZzdycEdVWXZJZjk5UjlSaldkRXpWUUxOQlNRTC9iOVpLbG9vZURheU9ZNnJJNkQ5Y21Wc3hGWk1Ma3gvR2cwa09XMjdMWG1YdWtuL3I3Uy9VT1h5Uy84SDJ6NDgzaGlYL3dzT1hRdFBEa3I5b1hpL1ZmZ1JQWDlzVGxXb1BuRElkT0E1NjI4ZjZKMzdLd2RHeVY0M2szVDlEcjdlNnUrR3pJQndhUzAzVlBYa0ZEdGJmK0wzeTAvdmc3ZXFqUytzM3I3QnhVK0dhQzBkU011UkdXcnFydmprUCtaVkxuMitvMkFYVDRYbmJXczVPUXI3aHFSOStyZStHWE4vWVBUVUhUdG00ZkNyMVZlUE5FWmdpTDU3czJLVkJmdkM2S1VCK3crdXJscHp1Z3Z3U3BjWVk4a0YrZnRIUHhrMEVscDk1Yi9FaW1OaDAvSlZWNDd2aDZwK1ZuczZQM1pBTkhjbzZKbWNnTzNOMXNPTDhOY2hxZTcvZTgweWJqYnU4Y2FzKy92Z3ZrUEZmREc3Wk93Nlowd092cFErZmhNdHF2Q2N6WkVCbTlmcVd1cm9DWk13c2FJK05HelZwK2UxTCtHUmh4VDZIc1JndVRBNi84ZTJWUCtEY0UrOTg0Uno4QU5Meis4M01ZYlJMMW1JLzNtWGp6aFoydnJUNzNCM3dmWFpMZXZqWUdVaC90M25uaHJkT3dNaksyMTUrcnZzZ2pEM2F2NjlRZXdTR0xyMDcybmVqejY2ZjY4NDNBNHZTTTVKNy80bTIrd2Nla0p6WFB6eDJNZFVvT1FkeW1zdlpJem4zM3hzZUNyd3Z1WElqdlNnelhUSWZiaFhGc1diMXJZKzNjNUFZcWs3dFhtL0ZPeFNpOGo1Ymh4SUpSY1dhSnJZaWxVL0gzSCtzSVpsUXUzOURPaHNMUkNOaU02V0VXdFlGelRKUlNUd3BpbXViSGhFVG1JcEJsRkIwSlBJTDE2QzRFdVBYTDFpSFVVeVBpdUpHWlRzV216c1RXR1pCNWFSb0R4L0ZPRUxpbGxxN2lScWF6a0tUZGpZTmNhenFZcEJRYWlSMDlnYU84YTdGS3FaRVUzUit5NjFOU1UwbkNRV0pyVmhUSWdhS2xUQTFoNUlPa2JObGpwYmpXYUg0ODVSU0tzZVF4aW5sUm04RXNmZHRwd3pQdEVJSnBKd1VzMk1naC9tdEtqY0IxdUNXbFFRcW83TU9oWkxEdVlacVpoaFpKa2NOdFczWjhwSTRsZGJ1bVNYNy9rN0ZjZE1LVlc2RmNtRTVTbmc5c0xxRDFaYS9EODhxcFR1R3R1RVlyemFqcU1pUW1LQ0txdk9uTTZzbTZrUkgzTThya3hpM0ZNa1FDbjhCOFhLZ2Vzb0ZBQUE9In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Region"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Happiness.Rank"],"name":[3],"type":["int"],"align":["right"]},{"label":["Happiness.Score"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Standard.Error"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["Economy..GDP.per.Capita."],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Family"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Health..Life.Expectancy."],"name":[8],"type":["dbl"],"align":["right"]},{"label":["Freedom"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["Trust..Government.Corruption."],"name":[10],"type":["dbl"],"align":["right"]},{"label":["Generosity"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["Dystopia.Residual"],"name":[12],"type":["dbl"],"align":["right"]}],"data":[{"1":"Switzerland","2":"Western Europe","3":"1","4":"7.587","5":"0.03411","6":"1.39651","7":"1.34951","8":"0.94143","9":"0.66557","10":"0.41978","11":"0.29678","12":"2.51738","_rn_":"1"},{"1":"Iceland","2":"Western Europe","3":"2","4":"7.561","5":"0.04884","6":"1.30232","7":"1.40223","8":"0.94784","9":"0.62877","10":"0.14145","11":"0.43630","12":"2.70201","_rn_":"2"},{"1":"Denmark","2":"Western Europe","3":"3","4":"7.527","5":"0.03328","6":"1.32548","7":"1.36058","8":"0.87464","9":"0.64938","10":"0.48357","11":"0.34139","12":"2.49204","_rn_":"3"},{"1":"Norway","2":"Western Europe","3":"4","4":"7.522","5":"0.03880","6":"1.45900","7":"1.33095","8":"0.88521","9":"0.66973","10":"0.36503","11":"0.34699","12":"2.46531","_rn_":"4"},{"1":"Canada","2":"North America","3":"5","4":"7.427","5":"0.03553","6":"1.32629","7":"1.32261","8":"0.90563","9":"0.63297","10":"0.32957","11":"0.45811","12":"2.45176","_rn_":"5"},{"1":"Finland","2":"Western Europe","3":"6","4":"7.406","5":"0.03140","6":"1.29025","7":"1.31826","8":"0.88911","9":"0.64169","10":"0.41372","11":"0.23351","12":"2.61955","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[12]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RyKGRhdGFzZXQpXG5cbmBgYCJ9 -->
+<pre class="r"><code>str(dataset)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiJ2RhdGEuZnJhbWUnOlx0MTU4IG9icy4gb2YgIDEyIHZhcmlhYmxlczpcbiAkIENvdW50cnkgICAgICAgICAgICAgICAgICAgICAgOiBjaHIgIFwiU3dpdHplcmxhbmRcIiBcIkljZWxhbmRcIiBcIkRlbm1hcmtcIiBcIk5vcndheVwiIC4uLlxuICQgUmVnaW9uICAgICAgICAgICAgICAgICAgICAgICA6IGNociAgXCJXZXN0ZXJuIEV1cm9wZVwiIFwiV2VzdGVybiBFdXJvcGVcIiBcIldlc3Rlcm4gRXVyb3BlXCIgXCJXZXN0ZXJuIEV1cm9wZVwiIC4uLlxuICQgSGFwcGluZXNzLlJhbmsgICAgICAgICAgICAgICA6IGludCAgMSAyIDMgNCA1IDYgNyA4IDkgMTAgLi4uXG4gJCBIYXBwaW5lc3MuU2NvcmUgICAgICAgICAgICAgIDogbnVtICA3LjU5IDcuNTYgNy41MyA3LjUyIDcuNDMgLi4uXG4gJCBTdGFuZGFyZC5FcnJvciAgICAgICAgICAgICAgIDogbnVtICAwLjAzNDEgMC4wNDg4IDAuMDMzMyAwLjAzODggMC4wMzU1IC4uLlxuICQgRWNvbm9teS4uR0RQLnBlci5DYXBpdGEuICAgICA6IG51bSAgMS40IDEuMyAxLjMzIDEuNDYgMS4zMyAuLi5cbiAkIEZhbWlseSAgICAgICAgICAgICAgICAgICAgICAgOiBudW0gIDEuMzUgMS40IDEuMzYgMS4zMyAxLjMyIC4uLlxuICQgSGVhbHRoLi5MaWZlLkV4cGVjdGFuY3kuICAgICA6IG51bSAgMC45NDEgMC45NDggMC44NzUgMC44ODUgMC45MDYgLi4uXG4gJCBGcmVlZG9tICAgICAgICAgICAgICAgICAgICAgIDogbnVtICAwLjY2NiAwLjYyOSAwLjY0OSAwLjY3IDAuNjMzIC4uLlxuICQgVHJ1c3QuLkdvdmVybm1lbnQuQ29ycnVwdGlvbi46IG51bSAgMC40MiAwLjE0MSAwLjQ4NCAwLjM2NSAwLjMzIC4uLlxuICQgR2VuZXJvc2l0eSAgICAgICAgICAgICAgICAgICA6IG51bSAgMC4yOTcgMC40MzYgMC4zNDEgMC4zNDcgMC40NTggLi4uXG4gJCBEeXN0b3BpYS5SZXNpZHVhbCAgICAgICAgICAgIDogbnVtICAyLjUyIDIuNyAyLjQ5IDIuNDcgMi40NSAuLi5cbiJ9 -->
+<pre><code>'data.frame':   158 obs. of  12 variables:
+ $ Country                      : chr  &quot;Switzerland&quot; &quot;Iceland&quot; &quot;Denmark&quot; &quot;Norway&quot; ...
+ $ Region                       : chr  &quot;Western Europe&quot; &quot;Western Europe&quot; &quot;Western Europe&quot; &quot;Western Europe&quot; ...
+ $ Happiness.Rank               : int  1 2 3 4 5 6 7 8 9 10 ...
+ $ Happiness.Score              : num  7.59 7.56 7.53 7.52 7.43 ...
+ $ Standard.Error               : num  0.0341 0.0488 0.0333 0.0388 0.0355 ...
+ $ Economy..GDP.per.Capita.     : num  1.4 1.3 1.33 1.46 1.33 ...
+ $ Family                       : num  1.35 1.4 1.36 1.33 1.32 ...
+ $ Health..Life.Expectancy.     : num  0.941 0.948 0.875 0.885 0.906 ...
+ $ Freedom                      : num  0.666 0.629 0.649 0.67 0.633 ...
+ $ Trust..Government.Corruption.: num  0.42 0.141 0.484 0.365 0.33 ...
+ $ Generosity                   : num  0.297 0.436 0.341 0.347 0.458 ...
+ $ Dystopia.Residual            : num  2.52 2.7 2.49 2.47 2.45 ...</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3RyKGRhdGFzZXQpXG5cbmBgYCJ9 -->
+<pre class="r"><code>str(dataset)
 </code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiJ2RhdGEuZnJhbWUnOlx0MTU4IG9icy4gb2YgIDEyIHZhcmlhYmxlczpcbiAkIENvdW50cnkgICAgICAgICAgICAgICAgICAgICAgOiBGYWN0b3Igdy8gMTU4IGxldmVscyBcIkFmZ2hhbmlzdGFuXCIsLi46IDEzNiA1OSAzOCAxMDYgMjUgNDYgMTAwIDEzNSAxMDEgNyAuLi5cbiAkIFJlZ2lvbiAgICAgICAgICAgICAgICAgICAgICAgOiBGYWN0b3Igdy8gMTAgbGV2ZWxzIFwiQXVzdHJhbGlhIGFuZCBOZXcgWmVhbGFuZFwiLC4uOiAxMCAxMCAxMCAxMCA2IDEwIDEwIDEwIDEgMSAuLi5cbiAkIEhhcHBpbmVzcy5SYW5rICAgICAgICAgICAgICAgOiBpbnQgIDEgMiAzIDQgNSA2IDcgOCA5IDEwIC4uLlxuICQgSGFwcGluZXNzLlNjb3JlICAgICAgICAgICAgICA6IG51bSAgNy41OSA3LjU2IDcuNTMgNy41MiA3LjQzIC4uLlxuICQgU3RhbmRhcmQuRXJyb3IgICAgICAgICAgICAgICA6IG51bSAgMC4wMzQxIDAuMDQ4OCAwLjAzMzMgMC4wMzg4IDAuMDM1NSAuLi5cbiAkIEVjb25vbXkuLkdEUC5wZXIuQ2FwaXRhLiAgICAgOiBudW0gIDEuNCAxLjMgMS4zMyAxLjQ2IDEuMzMgLi4uXG4gJCBGYW1pbHkgICAgICAgICAgICAgICAgICAgICAgIDogbnVtICAxLjM1IDEuNCAxLjM2IDEuMzMgMS4zMiAuLi5cbiAkIEhlYWx0aC4uTGlmZS5FeHBlY3RhbmN5LiAgICAgOiBudW0gIDAuOTQxIDAuOTQ4IDAuODc1IDAuODg1IDAuOTA2IC4uLlxuICQgRnJlZWRvbSAgICAgICAgICAgICAgICAgICAgICA6IG51bSAgMC42NjYgMC42MjkgMC42NDkgMC42NyAwLjYzMyAuLi5cbiAkIFRydXN0Li5Hb3Zlcm5tZW50LkNvcnJ1cHRpb24uOiBudW0gIDAuNDIgMC4xNDEgMC40ODQgMC4zNjUgMC4zMyAuLi5cbiAkIEdlbmVyb3NpdHkgICAgICAgICAgICAgICAgICAgOiBudW0gIDAuMjk3IDAuNDM2IDAuMzQxIDAuMzQ3IDAuNDU4IC4uLlxuICQgRHlzdG9waWEuUmVzaWR1YWwgICAgICAgICAgICA6IG51bSAgMi41MiAyLjcgMi40OSAyLjQ3IDIuNDUgLi4uXG4ifQ== -->
@@ -207,27 +235,6 @@ str(dataset)
  $ Trust..Government.Corruption.: num  0.42 0.141 0.484 0.365 0.33 ...
  $ Generosity                   : num  0.297 0.436 0.341 0.347 0.458 ...
  $ Dystopia.Residual            : num  2.52 2.7 2.49 2.47 2.45 ...</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeShkYXRhc2V0KVxuYGBgIn0= -->
-<pre class="r"><code>summary(dataset)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICBDb3VudHJ5ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBSZWdpb24gICBIYXBwaW5lc3MuUmFuayAgIEhhcHBpbmVzcy5TY29yZSBTdGFuZGFyZC5FcnJvciAgICBFY29ub215Li5HRFAucGVyLkNhcGl0YS4gICAgIEZhbWlseSAgICAgICBIZWFsdGguLkxpZmUuRXhwZWN0YW5jeS5cbiBBZmdoYW5pc3RhbjogIDEgICBTdWItU2FoYXJhbiBBZnJpY2EgICAgICAgICAgICAgOjQwICAgTWluLiAgIDogIDEuMDAgICBNaW4uICAgOjIuODM5ICAgTWluLiAgIDowLjAxODQ4ICAgTWluLiAgIDowLjAwMDAgICAgICAgICAgIE1pbi4gICA6MC4wMDAwICAgTWluLiAgIDowLjAwMDAgICAgICAgICAgXG4gQWxiYW5pYSAgICA6ICAxICAgQ2VudHJhbCBhbmQgRWFzdGVybiBFdXJvcGUgICAgIDoyOSAgIDFzdCBRdS46IDQwLjI1ICAgMXN0IFF1Ljo0LjUyNiAgIDFzdCBRdS46MC4wMzcyNyAgIDFzdCBRdS46MC41NDU4ICAgICAgICAgICAxc3QgUXUuOjAuODU2OCAgIDFzdCBRdS46MC40MzkyICAgICAgICAgIFxuIEFsZ2VyaWEgICAgOiAgMSAgIExhdGluIEFtZXJpY2EgYW5kIENhcmliYmVhbiAgICA6MjIgICBNZWRpYW4gOiA3OS41MCAgIE1lZGlhbiA6NS4yMzIgICBNZWRpYW4gOjAuMDQzOTQgICBNZWRpYW4gOjAuOTEwMiAgICAgICAgICAgTWVkaWFuIDoxLjAyOTUgICBNZWRpYW4gOjAuNjk2NyAgICAgICAgICBcbiBBbmdvbGEgICAgIDogIDEgICBXZXN0ZXJuIEV1cm9wZSAgICAgICAgICAgICAgICAgOjIxICAgTWVhbiAgIDogNzkuNDkgICBNZWFuICAgOjUuMzc2ICAgTWVhbiAgIDowLjA0Nzg4ICAgTWVhbiAgIDowLjg0NjEgICAgICAgICAgIE1lYW4gICA6MC45OTEwICAgTWVhbiAgIDowLjYzMDMgICAgICAgICAgXG4gQXJnZW50aW5hICA6ICAxICAgTWlkZGxlIEVhc3QgYW5kIE5vcnRoZXJuIEFmcmljYToyMCAgIDNyZCBRdS46MTE4Ljc1ICAgM3JkIFF1Ljo2LjI0NCAgIDNyZCBRdS46MC4wNTIzMCAgIDNyZCBRdS46MS4xNTg0ICAgICAgICAgICAzcmQgUXUuOjEuMjE0NCAgIDNyZCBRdS46MC44MTEwICAgICAgICAgIFxuIEFybWVuaWEgICAgOiAgMSAgIFNvdXRoZWFzdGVybiBBc2lhICAgICAgICAgICAgICA6IDkgICBNYXguICAgOjE1OC4wMCAgIE1heC4gICA6Ny41ODcgICBNYXguICAgOjAuMTM2OTMgICBNYXguICAgOjEuNjkwNCAgICAgICAgICAgTWF4LiAgIDoxLjQwMjIgICBNYXguICAgOjEuMDI1MiAgICAgICAgICBcbiAoT3RoZXIpICAgIDoxNTIgICAoT3RoZXIpICAgICAgICAgICAgICAgICAgICAgICAgOjE3ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gICAgRnJlZWRvbSAgICAgICBUcnVzdC4uR292ZXJubWVudC5Db3JydXB0aW9uLiAgIEdlbmVyb3NpdHkgICAgIER5c3RvcGlhLlJlc2lkdWFsXG4gTWluLiAgIDowLjAwMDAgICBNaW4uICAgOjAuMDAwMDAgICAgICAgICAgICAgICBNaW4uICAgOjAuMDAwMCAgIE1pbi4gICA6MC4zMjg2ICAgXG4gMXN0IFF1LjowLjMyODMgICAxc3QgUXUuOjAuMDYxNjggICAgICAgICAgICAgICAxc3QgUXUuOjAuMTUwNiAgIDFzdCBRdS46MS43NTk0ICAgXG4gTWVkaWFuIDowLjQzNTUgICBNZWRpYW4gOjAuMTA3MjIgICAgICAgICAgICAgICBNZWRpYW4gOjAuMjE2MSAgIE1lZGlhbiA6Mi4wOTU0ICAgXG4gTWVhbiAgIDowLjQyODYgICBNZWFuICAgOjAuMTQzNDIgICAgICAgICAgICAgICBNZWFuICAgOjAuMjM3MyAgIE1lYW4gICA6Mi4wOTkwICAgXG4gM3JkIFF1LjowLjU0OTEgICAzcmQgUXUuOjAuMTgwMjUgICAgICAgICAgICAgICAzcmQgUXUuOjAuMzA5OSAgIDNyZCBRdS46Mi40NjI0ICAgXG4gTWF4LiAgIDowLjY2OTcgICBNYXguICAgOjAuNTUxOTEgICAgICAgICAgICAgICBNYXguICAgOjAuNzk1OSAgIE1heC4gICA6My42MDIxICAgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4ifQ== -->
-<pre><code>        Country                                Region   Happiness.Rank   Happiness.Score Standard.Error    Economy..GDP.per.Capita.     Family       Health..Life.Expectancy.
- Afghanistan:  1   Sub-Saharan Africa             :40   Min.   :  1.00   Min.   :2.839   Min.   :0.01848   Min.   :0.0000           Min.   :0.0000   Min.   :0.0000          
- Albania    :  1   Central and Eastern Europe     :29   1st Qu.: 40.25   1st Qu.:4.526   1st Qu.:0.03727   1st Qu.:0.5458           1st Qu.:0.8568   1st Qu.:0.4392          
- Algeria    :  1   Latin America and Caribbean    :22   Median : 79.50   Median :5.232   Median :0.04394   Median :0.9102           Median :1.0295   Median :0.6967          
- Angola     :  1   Western Europe                 :21   Mean   : 79.49   Mean   :5.376   Mean   :0.04788   Mean   :0.8461           Mean   :0.9910   Mean   :0.6303          
- Argentina  :  1   Middle East and Northern Africa:20   3rd Qu.:118.75   3rd Qu.:6.244   3rd Qu.:0.05230   3rd Qu.:1.1584           3rd Qu.:1.2144   3rd Qu.:0.8110          
- Armenia    :  1   Southeastern Asia              : 9   Max.   :158.00   Max.   :7.587   Max.   :0.13693   Max.   :1.6904           Max.   :1.4022   Max.   :1.0252          
- (Other)    :152   (Other)                        :17                                                                                                                        
-    Freedom       Trust..Government.Corruption.   Generosity     Dystopia.Residual
- Min.   :0.0000   Min.   :0.00000               Min.   :0.0000   Min.   :0.3286   
- 1st Qu.:0.3283   1st Qu.:0.06168               1st Qu.:0.1506   1st Qu.:1.7594   
- Median :0.4355   Median :0.10722               Median :0.2161   Median :2.0954   
- Mean   :0.4286   Mean   :0.14342               Mean   :0.2373   Mean   :2.0990   
- 3rd Qu.:0.5491   3rd Qu.:0.18025               3rd Qu.:0.3099   3rd Qu.:2.4624   
- Max.   :0.6697   Max.   :0.55191               Max.   :0.7959   Max.   :3.6021   
-                                                                                  </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -253,7 +260,7 @@ str(dataset)
 <!-- rnb-chunk-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUmVsYXTDs3JpbyAxIC0gdHJhYmFsaGFyIGFzIHF1ZXN0w7VlcyBkZSBwZXNxdWlzYSBjb20gbyBSIgphdXRob3I6ICJDaHJpc3RpYW5vIFJvc3NpbmkgTWFydGlucyBDb3N0YSIKZGF0ZTogIjIwIGRlIG1haW8gZGUgMjAxOCIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkKYGBgCgoKYGBge3J9CgpgYGAKCgoKIyMgUlExCgpgYGB7cn0KCmRhdGFzZXQgPC0gcmVhZC5jc3YoIi9ob21lL2NocmlzdGlhbm8vRHJvcGJveC90cmFiYWxob3MvZGlzY2lwbGluYV9taW5lcmFjYW8vZGF0YXNldHMvZGF0YXNldHNfbWVub3Jlcy93b3JsZC1oYXBwaW5lcy8yMDE1LmNzdiIsIHN0cmluZ3NBc0ZhY3RvcnMgPSBGQUxTRSkKCmRhdGFzZXQkUmVnaW9uIDwtIGZhY3RvcihkYXRhc2V0JFJlZ2lvbikKZGF0YXNldCRDb3VudHJ5IDwtIGZhY3RvcihkYXRhc2V0JENvdW50cnkpCgpzdHIoZGF0YXNldCkKCnN1bW1hcnkoZGF0YXNldCkKCmBgYAoKIyMgUlEyCgpgYGB7cn0KCmBgYAoKIyMgUlEzCgpgYGB7cn0KCmBgYAoKIyMgUlE0CgpgYGB7cn0KCmBgYAo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUmVsYXTDs3JpbyAxIC0gdHJhYmFsaGFyIGFzIHF1ZXN0w7VlcyBkZSBwZXNxdWlzYSBjb20gbyBSIgphdXRob3I6ICJDaHJpc3RpYW5vIFJvc3NpbmkgTWFydGlucyBDb3N0YSIKZGF0ZTogIjIwIGRlIG1haW8gZGUgMjAxOCIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmtuaXRyOjpvcHRzX2NodW5rJHNldChlY2hvID0gVFJVRSkKYGBgCgoKRGF0YXNldDogV29ybGQgSGFwcGluZXNzIFJlcG9ydApMaW5rOiBodHRwczovL3d3dy5rYWdnbGUuY29tL3Vuc2Rzbi93b3JsZC1oYXBwaW5lc3MKCgojIyBSUTEKCmBgYHtyfQoKZGF0YXNldDIwMTUgPC0gcmVhZC5jc3YoIi9ob21lL2NocmlzdGlhbm8vRHJvcGJveC90cmFiYWxob3MvZGlzY2lwbGluYV9taW5lcmFjYW8vZGF0YXNldHMvZGF0YXNldHNfbWVub3Jlcy93b3JsZC1oYXBwaW5lcy8yMDE1LmNzdiIsIHN0cmluZ3NBc0ZhY3RvcnMgPSBGQUxTRSkKZGF0YXNldDIwMTYgPC0gcmVhZC5jc3YoIi9ob21lL2NocmlzdGlhbm8vRHJvcGJveC90cmFiYWxob3MvZGlzY2lwbGluYV9taW5lcmFjYW8vZGF0YXNldHMvZGF0YXNldHNfbWVub3Jlcy93b3JsZC1oYXBwaW5lcy8yMDE2LmNzdiIsIHN0cmluZ3NBc0ZhY3RvcnMgPSBGQUxTRSkKZGF0YXNldDIwMTcgPC0gcmVhZC5jc3YoIi9ob21lL2NocmlzdGlhbm8vRHJvcGJveC90cmFiYWxob3MvZGlzY2lwbGluYV9taW5lcmFjYW8vZGF0YXNldHMvZGF0YXNldHNfbWVub3Jlcy93b3JsZC1oYXBwaW5lcy8yMDE3LmNzdiIsIHN0cmluZ3NBc0ZhY3RvcnMgPSBGQUxTRSkKCmhlYWQoZGF0YXNldCkKCmRhdGFzZXQkUmVnaW9uIDwtIGZhY3RvcihkYXRhc2V0JFJlZ2lvbikKZGF0YXNldCRDb3VudHJ5IDwtIGZhY3RvcihkYXRhc2V0JENvdW50cnkpCgpzdHIoZGF0YXNldCkKCnN1bW1hcnkoZGF0YXNldCkKCmBgYAoKYGBge3J9CnN0cihkYXRhc2V0KQpgYGAKCmBgYHtyfQoKdW5pcXVlKGRhdGFzZXQkUmVnaW9uKQoKZGF0YXNldCRSZWdpb24gPC0gZmFjdG9yKGRhdGFzZXQkUmVnaW9uKQpkYXRhc2V0JENvdW50cnkgPC0gZmFjdG9yKGRhdGFzZXQkQ291bnRyeSkKCnN0cihkYXRhc2V0KQoKCgoKCmBgYAoKCiMjIFJRMgoKYGBge3J9CgpgYGAKCiMjIFJRMwoKYGBge3J9CgpgYGAKCiMjIFJRNAoKYGBge3J9CgpgYGAK</div>
 
 
 

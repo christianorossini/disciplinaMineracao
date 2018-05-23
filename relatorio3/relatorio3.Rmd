@@ -66,7 +66,7 @@ dataset <- dataset[,c(-1,-3,-8)]
 #atributo cabin tem muitos valores nulos. será excluído também
 dataset <- dataset[,-7]
 
-# atribui a média para atributos com células vazias
+# atribui a mediana para atributos com células vazias
 dataset[is.na(dataset$Age),]$Age <- median(dataset$Age, na.rm = TRUE)
 dataset[is.na(dataset$Fare),]$Fare <- median(dataset$Fare, na.rm = TRUE)
 #atribui a categoria de maior frequencia aos campos vazios em Embarked

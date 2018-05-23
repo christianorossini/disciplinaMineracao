@@ -10,17 +10,19 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-```{r}
-
-```
-
+Dataset: World Happiness Report
+Link: https://www.kaggle.com/unsdsn/world-happiness
 
 
 ## RQ1
 
 ```{r}
 
-dataset <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/world-happines/2015.csv", stringsAsFactors = FALSE)
+dataset2015 <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/world-happines/2015.csv", stringsAsFactors = FALSE)
+dataset2016 <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/world-happines/2016.csv", stringsAsFactors = FALSE)
+dataset2017 <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/world-happines/2017.csv", stringsAsFactors = FALSE)
+
+head(dataset)
 
 dataset$Region <- factor(dataset$Region)
 dataset$Country <- factor(dataset$Country)
@@ -30,6 +32,26 @@ str(dataset)
 summary(dataset)
 
 ```
+
+```{r}
+str(dataset)
+```
+
+```{r}
+
+unique(dataset$Region)
+
+dataset$Region <- factor(dataset$Region)
+dataset$Country <- factor(dataset$Country)
+
+str(dataset)
+
+
+
+
+
+```
+
 
 ## RQ2
 
