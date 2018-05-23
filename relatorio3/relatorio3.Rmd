@@ -57,12 +57,6 @@ dataset
 summary(dataset)
 ```
 
-```{r}
-
-
-```
-
-
 ## 1.2 Transformações e preparação dos dados
 
 ```{r}
@@ -99,6 +93,9 @@ lm_efetividade
 
 ## 1.4 Discussão dos resultados
 
+Nota-se que o recall teve um desempenho melhor que o precision. Isto significa que a predição teve melhor êxito em termos da qualidade de acertos (83%) em relação à quantidade (76%).
+A predição gerou uma boa taxa de true negatives - TN/(TN+FP) (aprox. 0,91), ou seja, a identificação de não sobreviventes identificados foi relevante em relação a quantidade total de não sobreviventes realmente existentes, um contraponto interessante em relação ao Recall (adotado para os sobreviventes). Isto resultou em um informedness em torno de 70%. 
+A taxa de precisão de não sobreviventes foi de 0,9, ao contrário da taxa dos sobreviventes (0,76). Esta precisão de sobreviventes aquém do esperado resultou em um markedness de 67%.
 
 
 # 2.Desenvolvendo análise de efetividade com Support Vector Machines
@@ -161,5 +158,5 @@ all_kernels_efectiveness
 ```
 
 ## 2.4 Discussão dos resultados
-
-***** Pode-se observar que até uma faixa entre 3 e 30 vizinhos, o algoritmo conseguiu manter bons índices de recall e precision. Porém, na casa dos 100 vizinhos, o algoritmo generalizou de tal forma que houve um substancial aumento de falsos positivos e falsos negativos, compromentendo o  precision e recall, respectivamente. O f-measure é calculado baseado nas métricas anteriores e, portanto, obteve também um bom percentual, considerando-se, evidentemente, 'k' até aproximadamente 30.
+ 
+Todos os kernels testados obtiveram uma certa padronização dos resultados, exceto para a sigmoid. Embora este último seja a função de ativação mais comum dentre os Kernels SVM, se mostrou menos efetivo que as outras funções para o dataset em tela. 

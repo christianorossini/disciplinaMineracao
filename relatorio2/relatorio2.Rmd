@@ -81,7 +81,7 @@ all_knn_efectiveness
 
 ## 1.4 Discussão dos resultados
 
-Pode-se observar que até uma faixa entre 3 e 30 vizinhos, o algoritmo conseguiu manter bons índices de recall e precision. Porém, na casa dos 100 vizinhos, o algoritmo generalizou de tal forma que houve um substancial aumento de falsos positivos e falsos negativos, compromentendo o  precision e recall, respectivamente. O f-measure é calculado baseado nas métricas anteriores e, portanto, obteve também um bom percentual, considerando-se, evidentemente, 'k' até aproximadamente 30.
+Pode-se observar que, até uma faixa entre 3 e 30 vizinhos, o algoritmo conseguiu manter bons índices de recall e precision. Porém, na casa dos 100 vizinhos, o algoritmo generalizou de tal forma que houve um substancial aumento de falsos positivos e falsos negativos, compromentendo o  precision e o recall, respectivamente. O f-measure é calculado através das métricas anteriores e, portanto, acompanhou o mesmo desempenho.
 
 
 # 2. Desenvolvendo análise de efetividade com Naive Bayes
@@ -137,6 +137,8 @@ naiveb_efetividade
 
 ## 2.4 Discussão dos resultados
 
+O atributo alvo é binário, B ou M. Evidencia-se que o algoritmo obteve um bom desempenho em termos de TPs, FNs e FPs - TPs elevados, enquanto obteve uma quantidade pouco significativa de FNs e FPs. Este fator elevou a métrica de precision, recall e f-measure.
+Do ponto de vista da outra classe do atributo binário, a classe 'M', a  predição gerou uma boa taxa de true negatives (aprox. 0,91), ou seja, a identificação de tumores malignos foi alta em relação a quantidade total existentes. Isto resultou em um informedness em torno de 85%. A taxa de precisão de tumores malignos foi de 0,9, significa que a predição de tumores malignos "M" teve alta relevância, resultando em um markedness de 84%. 
 
 
 
@@ -205,5 +207,5 @@ qtd_t <- c(1,3)
 
 ## 3.4 Discussão dos resultados
 
-É perceptível notar que ao realizar um ajuste fino no número de "boostings interations", adicionando novas árvores de decisão para se chegar a melhor acurácia, chega-se a um resultado no qual a quantidade de TPs é 100%, enquanto a quantidade de FPs e FNs é 0. 
-Com isso, precision e recall, como também as demais métricas, são alavancados para cima.
+É perceptível que ao realizar um ajuste fino no número de "boostings interations", adicionando novas árvores de decisão para se chegar a melhor acurácia, obtém-se um resultado no qual a quantidade de TPs é 100%, enquanto a quantidade de FPs e FNs é 0. 
+Com isso, precision e recall, como também as demais métricas, são alavancadas para cima.
