@@ -106,6 +106,8 @@ classesList <- classesList=="B"
 
 
 ```{r}
+set.seed(3)
+folds <- createFolds(classesList, k =5)
 
 naiveb_efetividade_by_fold <- executeNaiveBayes(dataset=dsBreastCancer, folds = folds, datasetClasses = classesList)
 naiveb_efetividade_by_fold <- as.data.frame(naiveb_efetividade_by_fold)

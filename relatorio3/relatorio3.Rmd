@@ -103,11 +103,67 @@ lm_efetividade
 
 # 2.Desenvolvendo análise de efetividade com Support Vector Machines
 
-* Dataset "Titanic"
-* Objetivo: dado um conjunto de informções de cada passageiro do naufrágio do navio, fazer predição de sobreviventes
-* Atributo alvo: survived
+* Dataset "Breast Cancer"
+* Objetivo: baseado em alguns atributos relacionados a exame de imagem e seu respectivo diagnóstico, classificar se o cancer de mama é maligno ou benigno
+* Atributo alvo: diagnosis (maglino=M, benigno=B)
+
+## 2.1 Amostra do dataset
+```{r}
+
+dsBreastCancer <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/breast-cancer/data.csv", stringsAsFactors = TRUE)
+
+head(dsBreastCancer)
+```
 
 
+```{r}
+str(dsBreastCancer)
+```
+
+
+## 2.2 Transformações e preparação dos dados
+
+```{r}
+#retira o identificador
+dsBreastCancer <- dsBreastCancer[c(-1)]
+
+```
+
+
+## 2.3 Análise de efetividade com 4 diferentes kernels
+
+
+```{r include=FALSE}
+
+set.seed(3)
+folds <- createFolds(dsBreastCancer$diagnosis, k =5)
+
+kernels <- c("rbfdot","polydot","vanilladot","tanhdot")
+
+all_kernels_efectiveness <- data.frame(c(0,0,0,0,0))
+for(kernel in kernels){
+  svm_efetividade_by_fold <- executeSVM(dataset=dsBreastCancer, folds = folds, k=kernel)
+  svm_efetividade_by_fold <- as.data.frame(svm_efetividade_by_fold)
+  
+  svm_efetividade <- rowMeans(svm_efetividade_by_fold)
+  svm_efetividade <- as.data.frame(svm_efetividade)
+  rownames(svm_efetividade) <- c("precision","recall","f-measure", "informedness","markedness")
+  
+  all_kernels_efectiveness <- cbind(all_kernels_efectiveness, svm_efetividade)
+}  
+
+all_kernels_efectiveness <- all_kernels_efectiveness[,-1]
+colnames(all_kernels_efectiveness) <- c("radial basis", "polynomial","linear","hyperbolic tangent sigmoid")
+```
+
+```{r}
+all_kernels_efectiveness
+```
+
+## 2.4 Discussão dos resultados
+
+
+# 3.Desenvolvendo análise de efetividade com Support Vector Machines
 
 
 

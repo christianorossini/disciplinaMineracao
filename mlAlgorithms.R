@@ -8,6 +8,7 @@ library(randomForest)
 
 library(dplyr)
 library(class)
+library(kernlab)
 
 ####################################################### Functions ###################################################################
 
@@ -159,14 +160,18 @@ executeC50 <- function(dataset, folds, datasetClasses){
   
 }
 
-executeSVM <- function(dataset, folds){
+executeSVM <- function(dataset, folds, k){
   results <- lapply(folds, function(x) {
     train <- dataset[-x, ]
     test <- dataset[x, ]
-    model <- svm(train$Affected~ ., data = train)
-    pred <- predict(model, test)
     
-    results <- measures(test$Affected, pred)
+    model <-ksvm(diagnosis~ ., data = train, kernel=k)
+    pred <- predict(model, test, type="response")
+    
+    test$diagnosis <- test$diagnosis=="B"
+    pred <- pred=="B"
+    
+    results <- getMeasuresBi(test$diagnosis,pred)
     
     return(results)
   })
@@ -354,50 +359,50 @@ normalize <- function(x) {
 # rownames(lm_efetividade) <- c("precision","recall","f-measure")
 
 
-test <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/titanic/test.csv", stringsAsFactors = FALSE)
-gender_submission <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/titanic/gender_submission.csv", stringsAsFactors = FALSE)
-train <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/titanic/train.csv", stringsAsFactors = FALSE)
-
-test$Pclass <- as.factor(test$Pclass)
-test$Sex <- as.factor(test$Sex)
-test$Embarked <- as.factor(test$Embarked)
-train$Pclass <- as.factor(train$Pclass)
-train$Sex <- as.factor(train$Sex)
-train$Embarked <- as.factor(train$Embarked)
-
-survived <- train[,1:2]
-survived <- rbind(survived, gender_submission)
-survived <- survived[,-1]
-
-# retira o atributo alvo
-dataset <- train[,-2]
-
-#insere o atributo alvo no fim do dataset
-dataset <- rbind(dataset,test)
-dataset <- cbind(dataset,survived=survived)
-
-#retira atributos de natureza única: passengerId, name, ticket,
-dataset <- dataset[,c(-1,-3,-8)]
-#atributo cabin tem muitos valores nulos. será excluído também
-dataset <- dataset[,-7]
-
-# atribui a média para atributos com células vazias
-dataset[is.na(dataset$Age),]$Age <- median(dataset$Age, na.rm = TRUE)
-dataset[is.na(dataset$Fare),]$Fare <- median(dataset$Fare, na.rm = TRUE)
-#atribui a categoria de maior frequencia aos campos vazios em Embarked
-dataset[dataset$Embarked=='',]$Embarked <- 'S'
-
-set.seed(3)
-folds <- createFolds(dataset$survived, k =5)
-
-lm_efetividade_by_fold <- executeLm(dataset=dataset, folds = folds)
-lm_efetividade_by_fold <- as.data.frame(lm_efetividade_by_fold)
-
-lm_efetividade <- rowMeans(lm_efetividade_by_fold)
-lm_efetividade <- as.data.frame(lm_efetividade)
-rownames(lm_efetividade) <- c("precision","recall","f-measure","infomedness","markdness")
-
-lm_efetividade
+# test <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/titanic/test.csv", stringsAsFactors = FALSE)
+# gender_submission <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/titanic/gender_submission.csv", stringsAsFactors = FALSE)
+# train <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/titanic/train.csv", stringsAsFactors = FALSE)
+# 
+# test$Pclass <- as.factor(test$Pclass)
+# test$Sex <- as.factor(test$Sex)
+# test$Embarked <- as.factor(test$Embarked)
+# train$Pclass <- as.factor(train$Pclass)
+# train$Sex <- as.factor(train$Sex)
+# train$Embarked <- as.factor(train$Embarked)
+# 
+# survived <- train[,1:2]
+# survived <- rbind(survived, gender_submission)
+# survived <- survived[,-1]
+# 
+# # retira o atributo alvo
+# dataset <- train[,-2]
+# 
+# #insere o atributo alvo no fim do dataset
+# dataset <- rbind(dataset,test)
+# dataset <- cbind(dataset,survived=survived)
+# 
+# #retira atributos de natureza única: passengerId, name, ticket,
+# dataset <- dataset[,c(-1,-3,-8)]
+# #atributo cabin tem muitos valores nulos. será excluído também
+# dataset <- dataset[,-7]
+# 
+# # atribui a média para atributos com células vazias
+# dataset[is.na(dataset$Age),]$Age <- median(dataset$Age, na.rm = TRUE)
+# dataset[is.na(dataset$Fare),]$Fare <- median(dataset$Fare, na.rm = TRUE)
+# #atribui a categoria de maior frequencia aos campos vazios em Embarked
+# dataset[dataset$Embarked=='',]$Embarked <- 'S'
+# 
+# set.seed(3)
+# folds <- createFolds(dataset$survived, k =5)
+# 
+# lm_efetividade_by_fold <- executeLm(dataset=dataset, folds = folds)
+# lm_efetividade_by_fold <- as.data.frame(lm_efetividade_by_fold)
+# 
+# lm_efetividade <- rowMeans(lm_efetividade_by_fold)
+# lm_efetividade <- as.data.frame(lm_efetividade)
+# rownames(lm_efetividade) <- c("precision","recall","f-measure","infomedness","markdness")
+# 
+# lm_efetividade
 
 
 # dataset <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/breast-cancer/data.csv", stringsAsFactors = TRUE)
@@ -419,4 +424,35 @@ lm_efetividade
 # 
 # lm_efetividade
 
+
+dsBreastCancer <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/breast-cancer/data.csv", stringsAsFactors = TRUE)
+
+str(dsBreastCancer)
+
+#retira o identificador
+dsBreastCancer <- dsBreastCancer[c(-1)]
+
+# Facilitando o calculo de efetividade: transforma B=TRUE, M=FALSE
+## benigno=true, maligno=false
+#dsBreastCancer$diagnosis <- dsBreastCancer$diagnosis=="B"
+
+set.seed(3)
+folds <- createFolds(dsBreastCancer$diagnosis, k =5)
+
+kernels <- c("rbfdot","polydot","vanilladot")
+
+all_kernels_efectiveness <- data.frame(c(0,0,0,0,0))
+for(kernel in kernels){
+  svm_efetividade_by_fold <- executeSVM(dataset=dsBreastCancer, folds = folds, k=kernel)
+  svm_efetividade_by_fold <- as.data.frame(svm_efetividade_by_fold)
+  
+  svm_efetividade <- rowMeans(svm_efetividade_by_fold)
+  svm_efetividade <- as.data.frame(svm_efetividade)
+  rownames(svm_efetividade) <- c("precision","recall","f-measure", "informedness","markedness")
+  
+  all_kernels_efectiveness <- cbind(all_kernels_efectiveness, svm_efetividade)
+}  
+
+all_kernels_efectiveness <- all_kernels_efectiveness[,-1]
+colnames(all_kernels_efectiveness) <- c("radial basis", "polynomial","linear")
 
