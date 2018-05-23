@@ -8,7 +8,7 @@ output: html_notebook
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Atividade: Relatório dos capítulos 6 a 9 do livro:
+Atividade:
 
 1. Estudar as técnicas Regression Methods e Black Box Methods (Support Vector Machines). 
 2. Avaliar a efetividade destas técnicas em termos de Recall, Precision, F-measure, Markedness e Informedness. 
@@ -18,7 +18,7 @@ Atividade: Relatório dos capítulos 6 a 9 do livro:
 # 1.Desenvolvendo análise de efetividade com Linear Regression
 
 * Dataset "Titanic"
-* Objetivo: dado um conjunto de informções de cada passageiro do naufrágio do navio, fazer predição de sobreviventes
+* Objetivo: dado um conjunto de informações de cada passageiro do naufrágio do navio, fazer predição de sobreviventes
 * Atributo alvo: survived
 
 
@@ -94,7 +94,7 @@ lm_efetividade
 ## 1.4 Discussão dos resultados
 
 Nota-se que o recall teve um desempenho melhor que o precision. Isto significa que a predição teve melhor êxito em termos da qualidade de acertos (83%) em relação à quantidade (76%).
-A predição gerou uma boa taxa de true negatives - TN/(TN+FP) (aprox. 0,91), ou seja, a identificação de não sobreviventes identificados foi relevante em relação a quantidade total de não sobreviventes realmente existentes, um contraponto interessante em relação ao Recall (adotado para os sobreviventes). Isto resultou em um informedness em torno de 70%. 
+A predição gerou uma boa taxa de true negatives (TN/(TN+FP) - aprox. 0,91), ou seja, a identificação de não sobreviventes identificados foi relevante em relação a quantidade total de não sobreviventes realmente existentes, um contraponto interessante em relação ao Recall (adotado para os sobreviventes). Isto resultou em um informedness em torno de 70%. 
 A taxa de precisão de não sobreviventes foi de 0,9, ao contrário da taxa dos sobreviventes (0,76). Esta precisão de sobreviventes aquém do esperado resultou em um markedness de 67%.
 
 
@@ -159,4 +159,4 @@ all_kernels_efectiveness
 
 ## 2.4 Discussão dos resultados
  
-Todos os kernels testados obtiveram uma certa padronização dos resultados, exceto para a sigmoid. Embora este último seja a função de ativação mais comum dentre os Kernels SVM, se mostrou menos efetivo que as outras funções para o dataset em tela. 
+Todos os kernels testados obtiveram uma certa padronização dos resultados, exceto para a sigmoid. Embora este último seja a função de ativação mais comum entre os Kernels SVM, se mostrou menos efetivo que as outras funções para o dataset em tela. 
