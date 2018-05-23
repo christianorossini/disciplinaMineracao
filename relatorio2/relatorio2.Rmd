@@ -21,7 +21,7 @@ Atividade:
 # 1.Desenvolvendo análise de efetividade com KNN 
 
 * Dataset "Iris Species"
-* Objetivo: baseado em algumas medidas de 3 espécies de Iris diferentes, classificar qual é espécie está relacionada
+* Objetivo: baseado em algumas medidas de 3 espécies de Iris diferentes, classificar qual é a espécie relacionada
 
 ## 1.1 Amostra do dataset  
 ```{r}
