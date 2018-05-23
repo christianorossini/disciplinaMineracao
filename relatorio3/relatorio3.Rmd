@@ -1,5 +1,5 @@
 ---
-title: "Relatório 3 - capítulos 6 a 9 do livro"
+title: "Relatório 3"
 author: "Christiano Rossini Martins Costa"
 output: html_notebook
 ---
@@ -10,8 +10,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Atividade: Relatório dos capítulos 6 a 9 do livro:
 
-1. Estudar as técnicas Regression Methods, Black Box Methods (Support Vector Machines) e k-means. 
-2. Escolher 3 datasets diferentes e avaliar a efetividade destas técnicas em termos de Recall, Precision, F-measure, Markedness e Informedness. 
+1. Estudar as técnicas Regression Methods e Black Box Methods (Support Vector Machines). 
+2. Avaliar a efetividade destas técnicas em termos de Recall, Precision, F-measure, Markedness e Informedness. 
 3. Discutir os resultados.
 
 
@@ -162,8 +162,4 @@ all_kernels_efectiveness
 
 ## 2.4 Discussão dos resultados
 
-
-# 3.Desenvolvendo análise de efetividade com Support Vector Machines
-
-
-
+***** Pode-se observar que até uma faixa entre 3 e 30 vizinhos, o algoritmo conseguiu manter bons índices de recall e precision. Porém, na casa dos 100 vizinhos, o algoritmo generalizou de tal forma que houve um substancial aumento de falsos positivos e falsos negativos, compromentendo o  precision e recall, respectivamente. O f-measure é calculado baseado nas métricas anteriores e, portanto, obteve também um bom percentual, considerando-se, evidentemente, 'k' até aproximadamente 30.

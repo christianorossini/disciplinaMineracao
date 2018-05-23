@@ -142,7 +142,7 @@ executeNaiveBayes <- function(dataset, folds, datasetClasses){
   
 }
 
-executeC50 <- function(dataset, folds, datasetClasses){
+executeC50 <- function(dataset, folds, datasetClasses, t){
   results <- lapply(folds, function(x) {
     train <- dataset[-x, ]
     train_classes <- datasetClasses[-x]
@@ -150,7 +150,7 @@ executeC50 <- function(dataset, folds, datasetClasses){
     test_classes <- datasetClasses[x]
     
     
-    model <- C5.0(train, factor(train_classes))
+    model <- C5.0(train, factor(train_classes),trials = t)
     pred <- predict(model, test)
     
     results <- getMeasuresBi(test = test_classes, pred = pred)
@@ -205,14 +205,14 @@ executeSMO <- function(dataset, folds){
 }
 
 # dataset = dataset sem a coluna de classes
-executeKNN <- function(dataset, folds, datasetClasses){
+executeKNN <- function(dataset, folds, datasetClasses, numk){
   results <- lapply(folds, function(x) {
     train <- dataset[-x, ]
     train_classes <- datasetClasses[-x]
     test <- dataset[x, ]
     test_classes <- datasetClasses[x]
     
-    pred <- knn(train = train, test = test, cl = train_classes, k = 21)
+    pred <- knn(train = train, test = test, cl = train_classes, k = numk)
     
     #results <- measures(test_classes, pred)
     results <- getMeasues(predicted = pred, expected = test_classes)
@@ -261,26 +261,38 @@ normalize <- function(x) {
 
 ################################# teste ########################################################
 
-# dsIris <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/Iris/Iris.csv")
+dsIris <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/Iris/Iris.csv")
+
+#retira o identificador
+dsIris <- dsIris[-1]
+#normaliza os dados
+dsIris_n <- as.data.frame(lapply(dsIris[1:4], normalize))
+# separa as classes
+classesList <- dsIris$Species
+
+set.seed(3)
+folds <- createFolds(dsIris$Species, k =5)
+
+
+# qtd_k <- c(3,10,20,30,60,100)
 # 
-# #retira o identificador
-# dsIris <- dsIris[-1]
-# #normaliza os dados
-# dsIris_n <- as.data.frame(lapply(dsIris[1:4], normalize))
-# # separa as classes
-# classesList <- dsIris$Species
+# all_knn_efectiveness <- data.frame(c(0,0,0,0,0))
 # 
-# set.seed(3)
-# folds <- createFolds(dsIris$Species, k =5)
+# for(qtd in qtd_k){
+#   knn_efetividade_by_fold <- executeKNN(dataset=dsIris_n, folds = folds, datasetClasses = classesList, qtd)
+#   knn_efetividade_by_fold <- as.data.frame(knn_efetividade_by_fold)
+#   
+#   knn_efetividade <- rowMeans(knn_efetividade_by_fold)
+#   knn_efetividade <- as.data.frame(knn_efetividade)
+#   rownames(knn_efetividade) <- c("precision","recall","f-measure","informedness","markedness")
+#   
+#   all_knn_efectiveness <- cbind(all_knn_efectiveness, knn_efetividade)
+# }  
 # 
-# knn_efetividade_by_fold <- executeKNN(dataset=dsIris_n, folds = folds, datasetClasses = classesList)
-# knn_efetividade_by_fold <- as.data.frame(knn_efetividade_by_fold)
+# all_knn_efectiveness <- all_knn_efectiveness[,-1]
+# colnames(all_knn_efectiveness) <- lapply(qtd_k, function(x){return(paste("k=",x))}) 
 # 
-# knn_efetividade <- rowMeans(knn_efetividade_by_fold)
-# knn_efetividade <- as.data.frame(knn_efetividade)
-# rownames(knn_efetividade) <- c("precision","recall","f-measure","informedness","markedness")
-# 
-# knn_efetividade
+# all_knn_efectiveness
 
 
 # dsBreastCancer <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/breast-cancer/data.csv", stringsAsFactors = TRUE)
@@ -304,38 +316,46 @@ normalize <- function(x) {
 # naiveb_efetividade
 
 
-# dsMushroom <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/mushrooms.csv")
-# #retira o o atributo veil.type, pois só tem 1 nível
-# dsMushroom <- dsMushroom[-17]
-# 
-# # separa as classes
-# classesList <- dsMushroom$class
-# #retira as classes do dataset principal
-# dsMushroom <- dsMushroom[-1] 
-# 
-# # Facilitando o calculo de efetividade: transforma e=TRUE, p=FALSE
-# ## comestível=true, não comestível=false
-# classesList <- classesList=="e"
-# 
-# #set.seed(3)
-# # definição de 20 folds
-# folds <- createFolds(classesList, k =20)
-# 
-# dectree_efetividade_by_folds <- executeC50(dataset=dsMushroom, folds = folds, datasetClasses = classesList)
-# dectree_efetividade_by_folds <- as.data.frame(dectree_efetividade_by_folds)
-# 
-# dectree_efetividade <- rowMeans(dectree_efetividade_by_folds)
-# dectree_efetividade <- as.data.frame(dectree_efetividade)
-# rownames(dectree_efetividade) <- c("precision","recall","f-measure", "informedness","markedness")
-# 
-# dectree_efetividade
+ dsMushroom <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/mushrooms.csv")
+ #retira o o atributo veil.type, pois só tem 1 nível
+ dsMushroom <- dsMushroom[-17]
+ 
+ # separa as classes
+ classesList <- dsMushroom$class
+ #retira as classes do dataset principal
+ dsMushroom <- dsMushroom[-1] 
+ 
+ # Facilitando o calculo de efetividade: transforma e=TRUE, p=FALSE
+ ## comestível=true, não comestível=false
+ classesList <- classesList=="e"
 
-# 
-# naiveb_efetividade <- rowMeans(naiveb_efetividade_by_fold)
-# naiveb_efetividade <- as.data.frame(naiveb_efetividade)
-# rownames(naiveb_efetividade) <- c("precision","recall","f-measure")
-# 
-# naiveb_efetividade
+ set.seed(3)
+ # definição de 20 folds
+ folds <- createFolds(classesList, k =20)
+ 
+ qtd_t <- c(1,3)
+ 
+ all_dectree_efectiveness <- data.frame(c(0,0,0,0,0))
+ 
+ for(qtd in qtd_t){
+   dectree_efetividade_by_folds <- executeC50(dataset=dsMushroom, folds = folds, datasetClasses = classesList, t = qtd)
+   dectree_efetividade_by_folds <- as.data.frame(dectree_efetividade_by_folds)
+   
+   dectree_efetividade <- rowMeans(dectree_efetividade_by_folds)
+   dectree_efetividade <- as.data.frame(dectree_efetividade)
+   rownames(dectree_efetividade) <- c("precision","recall","f-measure", "informedness","markedness")
+   
+   all_dectree_efectiveness <- cbind(all_dectree_efectiveness, dectree_efetividade)
+ }  
+ 
+ all_dectree_efectiveness <- all_dectree_efectiveness[,-1]
+ colnames(all_dectree_efectiveness) <- lapply(qtd_t, function(x){return(paste("k=",x))}) 
+ 
+ all_dectree_efectiveness
+
+ 
+ 
+ 
 
 
 # dectree_efetividadedectree_efetividade_by_folds <- executeC50(dataset=dsBreastCancer_n, folds = folds, datasetClasses = classesList)
@@ -425,34 +445,34 @@ normalize <- function(x) {
 # lm_efetividade
 
 
-dsBreastCancer <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/breast-cancer/data.csv", stringsAsFactors = TRUE)
-
-str(dsBreastCancer)
-
-#retira o identificador
-dsBreastCancer <- dsBreastCancer[c(-1)]
-
-# Facilitando o calculo de efetividade: transforma B=TRUE, M=FALSE
-## benigno=true, maligno=false
-#dsBreastCancer$diagnosis <- dsBreastCancer$diagnosis=="B"
-
-set.seed(3)
-folds <- createFolds(dsBreastCancer$diagnosis, k =5)
-
-kernels <- c("rbfdot","polydot","vanilladot")
-
-all_kernels_efectiveness <- data.frame(c(0,0,0,0,0))
-for(kernel in kernels){
-  svm_efetividade_by_fold <- executeSVM(dataset=dsBreastCancer, folds = folds, k=kernel)
-  svm_efetividade_by_fold <- as.data.frame(svm_efetividade_by_fold)
-  
-  svm_efetividade <- rowMeans(svm_efetividade_by_fold)
-  svm_efetividade <- as.data.frame(svm_efetividade)
-  rownames(svm_efetividade) <- c("precision","recall","f-measure", "informedness","markedness")
-  
-  all_kernels_efectiveness <- cbind(all_kernels_efectiveness, svm_efetividade)
-}  
-
-all_kernels_efectiveness <- all_kernels_efectiveness[,-1]
-colnames(all_kernels_efectiveness) <- c("radial basis", "polynomial","linear")
+# dsBreastCancer <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/breast-cancer/data.csv", stringsAsFactors = TRUE)
+# 
+# str(dsBreastCancer)
+# 
+# #retira o identificador
+# dsBreastCancer <- dsBreastCancer[c(-1)]
+# 
+# # Facilitando o calculo de efetividade: transforma B=TRUE, M=FALSE
+# ## benigno=true, maligno=false
+# #dsBreastCancer$diagnosis <- dsBreastCancer$diagnosis=="B"
+# 
+# set.seed(3)
+# folds <- createFolds(dsBreastCancer$diagnosis, k =5)
+# 
+# kernels <- c("rbfdot","polydot","vanilladot")
+# 
+# all_kernels_efectiveness <- data.frame(c(0,0,0,0,0))
+# for(kernel in kernels){
+#   svm_efetividade_by_fold <- executeSVM(dataset=dsBreastCancer, folds = folds, k=kernel)
+#   svm_efetividade_by_fold <- as.data.frame(svm_efetividade_by_fold)
+#   
+#   svm_efetividade <- rowMeans(svm_efetividade_by_fold)
+#   svm_efetividade <- as.data.frame(svm_efetividade)
+#   rownames(svm_efetividade) <- c("precision","recall","f-measure", "informedness","markedness")
+#   
+#   all_kernels_efectiveness <- cbind(all_kernels_efectiveness, svm_efetividade)
+# }  
+# 
+# all_kernels_efectiveness <- all_kernels_efectiveness[,-1]
+# colnames(all_kernels_efectiveness) <- c("radial basis", "polynomial","linear")
 
