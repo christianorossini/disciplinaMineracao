@@ -7,46 +7,77 @@ output: html_notebook
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+library(dplyr)
+library(highcharter)
+library(formattable)
+library(plotly)
+library(countrycode)
+library(maps)
 ```
 
 
 Dataset: World Happiness Report
 Link: https://www.kaggle.com/unsdsn/world-happiness
 
-
-## RQ1 Quais países que apresentaram as melhores evoluções e involuções entre 2015 e 2017
-
 ```{r}
-
-dataset2015 <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/world-happines/2015.csv", stringsAsFactors = FALSE)
-dataset2016 <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/world-happines/2016.csv", stringsAsFactors = FALSE)
-dataset2017 <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/world-happines/2017.csv", stringsAsFactors = FALSE)
-
-dataset2015[,"ano"] <- 2015
-dataset2016[,"ano"] <- 2016
-dataset2017[,"ano"] <- 2017
-
-names(dataset2015)
-names(dataset2016)
-names(dataset2017)
-
-full_dataset <- rbind(dataset2015, dataset2016)
-full_dataset <- rbind(full_dataset, dataset2017)
-
-head(dataset)
-
-dataset$Region <- factor(dataset$Region)
-dataset$Country <- factor(dataset$Country)
-
-str(dataset)
-
-summary(dataset)
+data(worldgeojson)
+df15 <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/world-happines/2015.csv", stringsAsFactors = FALSE)
+df16 <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/world-happines/2016.csv", stringsAsFactors = FALSE)
+df17 <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/world-happines/2017.csv", stringsAsFactors = FALSE)
 
 ```
 
+
+## RQ1 Quais países que apresentaram as melhores evoluções e as piores quedas no score de felicidade entre 2015 e 2017
+
 ```{r}
-str(dataset)
+
+df1<-merge(df15[,c(1,3)],
+           df16[,c(1,3)],
+           by.x = "Country",
+           by.y = "Country")
+df1<-merge(df1,
+           df17[,c(1,2)],
+           by.x = "Country",
+           by.y = "Country")
+colnames(df1)<-c("Country","2015","2016","2017")
+
+df1<-df1%>%
+  mutate(rank_change=`2017`-`2015`)
+
+asc <- df1[order(df1$rank_change),]
+desc <- df1[order(df1$rank_change,decreasing = TRUE),]
+dfBestChanges <- desc[1:3,]
+dfWorstChanges <- asc[1:3,]
+
+dfBestChanges
 ```
+
+```{r}
+dfWorstChanges
+```
+
+```{r}
+dfBestWortC <- rbind(dfBestChanges, dfWorstChanges)
+dfBestWortC <- dfBestWortC[,c(-6)]
+
+dfRank2015 <- data.frame(country=dfBestWortC$Country,rank=dfBestWortC$`2015`,ano="2015")
+dfRank2016 <- data.frame(country=dfBestWortC$Country,rank=dfBestWortC$`2016`,ano="2016")
+dfRank2017 <- data.frame(country=dfBestWortC$Country,rank=dfBestWortC$`2017`,ano="2017")
+
+dfRank <- rbind(dfRank2015,dfRank2016)  
+dfRank <- rbind(dfRank,dfRank2017)  
+
+dfRank %>% ggplot(aes(ano,rank,group=country)) + geom_line(aes(color=country)) + geom_point() + geom_label(aes(label=rank)) 
+
+
+#desc[1:5,c(1,5)] %>% ggplot(aes(Country,rank_change)) + geom_bar(stat = "identity")
+```
+
+
+
 
 ```{r}
 
@@ -57,10 +88,6 @@ dataset$Country <- factor(dataset$Country)
 
 str(dataset)
 
-
-
-
-
 ```
 
 
@@ -70,9 +97,18 @@ str(dataset)
 
 ```
 
-## RQ3
+## RQ3 Quais features influenciam no score de felicidade
 
 ```{r}
+
+test<-cor(as.matrix(df15[,-c(1,2,3)]))
+test2<-cor(as.matrix(df16[,-c(1,2,3)]))
+
+
+corrplot::corrplot(test,method = "square",type = "upper",mar = c(0,0,1,0))
+
+corrplot::corrplot(test2,type = "upper",method = "square",mar = c(0,0,1,0))
+
 
 ```
 
@@ -80,4 +116,66 @@ str(dataset)
 
 ```{r}
 
+plot_ly(df15,x=~Region,
+        y=~Happiness.Score,
+        type="box",
+        boxpoints="all",
+        pointpos = -1.8,
+        color=~Region)%>%
+  layout(xaxis=list(showticklabels = FALSE),
+         margin=list(b = 100))
+
+df15 %>% mutate(Region = reorder(Region, Happiness.Score, FUN = median)) %>% 
+  ggplot(aes(x = Region, y = Happiness.Score, fill=Region)) + 
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  xlab("")
 ```
+
+```{r}
+plot_ly(df16,x=~Region,
+        y=~Happiness.Score,
+        type="box",
+        boxpoints="all",
+        pointpos = -1.8,
+        color=~Region)%>%
+  layout(xaxis=list(showticklabels = FALSE),
+         margin=list(b = 100))
+```
+
+## RQ5
+
+```{r}
+plot1<-plot_ly(df15,x=~Happiness.Score,
+        y=~Health..Life.Expectancy.,
+        color=~Region,
+        colors=c("red","orange","yellow","green","blue","purple","black","grey","gold","darkblue"),
+        size=~Happiness.Score,
+        hoverinfo = 'text',
+        text=~paste("Happiness Score:",Happiness.Score,
+                    "</br>Health Life Expectancy:",Health..Life.Expectancy.,
+                    "</br>Country:",Country,
+                    "</br>Region:",Region))%>%
+  layout(xaxis=list(title="Happiness Score"),
+         yaxis=list(title="Health Life Expectancy"))
+
+plot2<-plot_ly(df16,x=~Happiness.Score,
+        y=~Health..Life.Expectancy.,
+        color=~Region,
+        colors=c("red","orange","yellow","green","blue","purple","black","grey","gold","darkblue"),
+        size=~Happiness.Score,
+        hoverinfo = 'text',
+        text=~paste("Happiness Score:",Happiness.Score,
+                    "</br>Health Life Expectancy:",Health..Life.Expectancy.,
+                    "</br>Country:",Country,
+                    "</br>Region:",Region))%>%
+  layout(xaxis=list(title="Happiness Score"),
+         yaxis=list(title="Health Life Expectancy"))
+
+plot1
+
+plot2
+
+df15 %>% ggplot(aes(Happiness.Score,Health..Life.Expectancy.,color=Region)) + geom_point()
+```
+
