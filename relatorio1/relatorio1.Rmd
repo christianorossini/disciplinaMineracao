@@ -29,8 +29,32 @@ df17 <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datase
 
 ```
 
+## RQ1 Quais features mais influenciam no score de felicidade?
 
-## RQ1 Quais países que apresentaram as melhores evoluções e as piores quedas no score de felicidade entre 2015 e 2017
+```{r}
+test<-cor(as.matrix(df15[,-c(1,2,3)]))
+test2<-cor(as.matrix(df16[,-c(1,2,3)]))
+test3<-cor(as.matrix(df17[,-c(1,2)]))
+```
+
+## - Matriz de correlação, dataset do ano de 2015
+```{r}
+corrplot::corrplot(test,method = "square",type = "upper",mar = c(0,0,1,0))
+```
+## - Matriz de correlação, dataset do ano de 2016
+```{r}
+corrplot::corrplot(test2,type = "upper",method = "square",mar = c(0,0,1,0))
+```
+## - Matriz de correlação, dataset do ano de 2017
+```{r}
+corrplot::corrplot(test3,type = "upper",method = "square",mar = c(0,0,1,0))
+```
+
+Cada uma das matrizes de correlação correspondem, respectivamente, aos anos de 2015, 2016 e 2017. Em comum, tendo a variável alvo "Happiness_Score" como referência, é possível observar que os atributos economy, family e health possuem os melhores índices de correlação, entre 0,8 e 1. Logo em seguida vem Freedom, Trust-GovernmentCorruption e Dystopia, com índice de correlação aproximada de 0,6 a 0,8.
+
+
+
+## RQ2 Quais países que apresentaram as melhores evoluções e as piores quedas no score de felicidade entre 2015 e 2017
 
 ```{r}
 
@@ -76,43 +100,10 @@ dfRank %>% ggplot(aes(ano,rank,group=country)) + geom_line(aes(color=country)) +
 #desc[1:5,c(1,5)] %>% ggplot(aes(Country,rank_change)) + geom_bar(stat = "identity")
 ```
 
+Notamos que a Venezuela foi o país que obteve e melhor a evolução, a despeito dos inúmeros problemas humanitários que são veiculados pela imprensa no dia a dia.
 
 
-
-```{r}
-
-unique(dataset$Region)
-
-dataset$Region <- factor(dataset$Region)
-dataset$Country <- factor(dataset$Country)
-
-str(dataset)
-
-```
-
-
-## RQ2 Qual o rank dos países obtiveram a média dos melhores scores de felicidade
-
-```{r}
-
-```
-
-## RQ3 Quais features influenciam no score de felicidade
-
-```{r}
-
-test<-cor(as.matrix(df15[,-c(1,2,3)]))
-test2<-cor(as.matrix(df16[,-c(1,2,3)]))
-
-
-corrplot::corrplot(test,method = "square",type = "upper",mar = c(0,0,1,0))
-
-corrplot::corrplot(test2,type = "upper",method = "square",mar = c(0,0,1,0))
-
-
-```
-
-## RQ4
+## RQ3 - Com o passar dos anos, qual foi o progresso do score de felicidade das regiões do planeta?
 
 ```{r}
 
@@ -124,6 +115,8 @@ plot_ly(df15,x=~Region,
         color=~Region)%>%
   layout(xaxis=list(showticklabels = FALSE),
          margin=list(b = 100))
+
+
 
 df15 %>% mutate(Region = reorder(Region, Happiness.Score, FUN = median)) %>% 
   ggplot(aes(x = Region, y = Happiness.Score, fill=Region)) + 
@@ -143,7 +136,7 @@ plot_ly(df16,x=~Region,
          margin=list(b = 100))
 ```
 
-## RQ5
+## RQ4
 
 ```{r}
 plot1<-plot_ly(df15,x=~Happiness.Score,
