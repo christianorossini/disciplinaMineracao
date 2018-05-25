@@ -27,6 +27,21 @@ df15 <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datase
 df16 <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/world-happines/2016.csv", stringsAsFactors = FALSE)
 df17 <- read.csv("/home/christiano/Dropbox/trabalhos/disciplina_mineracao/datasets/datasets_menores/world-happines/2017.csv", stringsAsFactors = FALSE)
 
+# adiciona region ao dataset de 2017
+countryRegion <- df15[,c("Country","Region")]
+for(region in unique(countryRegion[,"Region"])){
+  countriesInRegion <- countryRegion$Country[countryRegion$Region==region]
+  df17[df17$Country%in%countriesInRegion,"Region"]=region
+}
+
+df15[,"year"]=2015
+df16[,"year"]=2016
+df17[,"year"]=2017
+cols <- c("Happiness.Rank","Happiness.Score","Economy..GDP.per.Capita.","Family","Health..Life.Expectancy.","Freedom","Trust..Government.Corruption.","Generosity","Dystopia.Residual","Country","Region","year")
+df_full <- df15[,cols]
+df_full <- rbind(df_full,df16[,cols])
+df_full <- rbind(df_full,df17[,cols])
+
 ```
 
 ## RQ1 Quais features mais influenciam no score de felicidade?
@@ -54,7 +69,7 @@ Cada uma das matrizes de correlação correspondem, respectivamente, aos anos de
 
 
 
-## RQ2 Quais países que apresentaram as melhores evoluções e as piores quedas no score de felicidade entre 2015 e 2017
+## RQ2 Quais países que apresentaram as melhores evoluções e os piores declínios no ranking de score de felicidade entre 2015 e 2017?
 
 ```{r}
 
@@ -69,14 +84,17 @@ df1<-merge(df1,
 colnames(df1)<-c("Country","2015","2016","2017")
 
 df1<-df1%>%
-  mutate(rank_change=`2017`-`2015`)
+  mutate(rank_change=`2015`-`2017`)
 
 asc <- df1[order(df1$rank_change),]
 desc <- df1[order(df1$rank_change,decreasing = TRUE),]
-dfBestChanges <- desc[1:3,]
-dfWorstChanges <- asc[1:3,]
 
-dfBestChanges
+dfBestChanges <- desc[1:3,]
+rownames(dfBestChanges) <- c("1º", "2º", "3º")
+dfWorstChanges <- asc[1:3,]
+rownames(dfWorstChanges) <- c("1º", "2º", "3º")
+
+print(dfBestChanges)
 ```
 
 ```{r}
@@ -94,81 +112,42 @@ dfRank2017 <- data.frame(country=dfBestWortC$Country,rank=dfBestWortC$`2017`,ano
 dfRank <- rbind(dfRank2015,dfRank2016)  
 dfRank <- rbind(dfRank,dfRank2017)  
 
-dfRank %>% ggplot(aes(ano,rank,group=country)) + geom_line(aes(color=country)) + geom_point() + geom_label(aes(label=rank)) 
+dfRank %>% ggplot(aes(ano,rank,group=country)) +
+  geom_line(aes(color=country)) + geom_point() +
+  geom_label(aes(label=rank)) +
+  scale_y_continuous(trans = "reverse")
 
 
 #desc[1:5,c(1,5)] %>% ggplot(aes(Country,rank_change)) + geom_bar(stat = "identity")
 ```
 
-Notamos que a Venezuela foi o país que obteve e melhor a evolução, a despeito dos inúmeros problemas humanitários que são veiculados pela imprensa no dia a dia.
+Podemos notar que a Venezuela foi o país que obteve o pior declínio entre todos os países em estudo. Esta informação é justificada pelos inúmeros problemas humanitários que são veiculados pela imprensa no dia a dia. Libéria e Zambia, países também considerados subdesenvolvidos, também entraram no grupo dos 3 piores declínios.
 
 
-## RQ3 - Com o passar dos anos, qual foi o progresso do score de felicidade das regiões do planeta?
+## RQ3 - Com o passar dos anos, quais foram as regiões com os melhores e os piores scores de felicidade; qual foi o progresso das regiões entre 2015 e 2017?
 
 ```{r}
 
-plot_ly(df15,x=~Region,
-        y=~Happiness.Score,
-        type="box",
-        boxpoints="all",
-        pointpos = -1.8,
-        color=~Region)%>%
-  layout(xaxis=list(showticklabels = FALSE),
-         margin=list(b = 100))
-
-
-
-df15 %>% mutate(Region = reorder(Region, Happiness.Score, FUN = median)) %>% 
+df_full %>% mutate(Region = reorder(Region, Happiness.Score, FUN = median)) %>% 
   ggplot(aes(x = Region, y = Happiness.Score, fill=Region)) + 
   geom_boxplot() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-  xlab("")
+  facet_grid(year~.) 
+   
+  
 ```
 
+A Europa Ocidental, América do Norte, além de Australia e Nova Zelândia encabeçam a lista de regiões com o melhores scores de felicidade, eunquanto 
+
+
+
+## RQ4 - Qual a influência do PIB Per Capita no score de felicidade? 
 ```{r}
-plot_ly(df16,x=~Region,
-        y=~Happiness.Score,
-        type="box",
-        boxpoints="all",
-        pointpos = -1.8,
-        color=~Region)%>%
-  layout(xaxis=list(showticklabels = FALSE),
-         margin=list(b = 100))
-```
 
-## RQ4
-
-```{r}
-plot1<-plot_ly(df15,x=~Happiness.Score,
-        y=~Health..Life.Expectancy.,
-        color=~Region,
-        colors=c("red","orange","yellow","green","blue","purple","black","grey","gold","darkblue"),
-        size=~Happiness.Score,
-        hoverinfo = 'text',
-        text=~paste("Happiness Score:",Happiness.Score,
-                    "</br>Health Life Expectancy:",Health..Life.Expectancy.,
-                    "</br>Country:",Country,
-                    "</br>Region:",Region))%>%
-  layout(xaxis=list(title="Happiness Score"),
-         yaxis=list(title="Health Life Expectancy"))
-
-plot2<-plot_ly(df16,x=~Happiness.Score,
-        y=~Health..Life.Expectancy.,
-        color=~Region,
-        colors=c("red","orange","yellow","green","blue","purple","black","grey","gold","darkblue"),
-        size=~Happiness.Score,
-        hoverinfo = 'text',
-        text=~paste("Happiness Score:",Happiness.Score,
-                    "</br>Health Life Expectancy:",Health..Life.Expectancy.,
-                    "</br>Country:",Country,
-                    "</br>Region:",Region))%>%
-  layout(xaxis=list(title="Happiness Score"),
-         yaxis=list(title="Health Life Expectancy"))
-
-plot1
-
-plot2
+df_full %>% ggplot(aes(Happiness.Score,Economy..GDP.per.Capita.,color=Region)) + geom_point() + facet_grid(year~.) 
 
 df15 %>% ggplot(aes(Happiness.Score,Health..Life.Expectancy.,color=Region)) + geom_point()
+
 ```
 
+O score de felicidade é influenciado diretamente pelo PIB Per Capita de uma região, pois o gráfico aponta uma tendência de ascendente onde as regiões com os Melhores PIBs proporcionam melhor qualidade de vida e, portanto, apontam para um score de felicidade maior. 
