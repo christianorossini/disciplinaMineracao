@@ -127,17 +127,15 @@ Podemos notar que a Venezuela foi o país que obteve o pior declínio entre todo
 ## RQ3 - Com o passar dos anos, quais foram as regiões com os melhores e os piores scores de felicidade; qual foi o progresso das regiões entre 2015 e 2017?
 
 ```{r}
-
 df_full %>% mutate(Region = reorder(Region, Happiness.Score, FUN = median)) %>% 
   ggplot(aes(x = Region, y = Happiness.Score, fill=Region)) + 
   geom_boxplot() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
   facet_grid(year~.) 
-   
-  
 ```
 
-A Europa Ocidental, América do Norte, além de Australia e Nova Zelândia encabeçam a lista de regiões com o melhores scores de felicidade, eunquanto 
+A Europa Ocidental, América do Norte, além de Australia e Nova Zelândia encabeçam a lista de regiões com o melhores scores de felicidade, enquanto a região da África subsariana e Sul Asiático possuem os piores scores. 
+Os boxplots estão ordenados pela mediana de cada distribuição. Dado o pequeno intervalo considerado, 2015 a 2017, nenhuma região ascendeu o suficiente para resultar em um deslocamento horizontal (eixo x).
 
 
 
@@ -150,4 +148,4 @@ df15 %>% ggplot(aes(Happiness.Score,Health..Life.Expectancy.,color=Region)) + ge
 
 ```
 
-O score de felicidade é influenciado diretamente pelo PIB Per Capita de uma região, pois o gráfico aponta uma tendência de ascendente onde as regiões com os Melhores PIBs proporcionam melhor qualidade de vida e, portanto, apontam para um score de felicidade maior. 
+O score de felicidade é influenciado diretamente pelo PIB Per Capita de cada região, pois o gráfico aponta uma tendência ascendente onde as regiões com os Melhores PIBs proporcionam um score de felicidade maior. Os países do Oeste Europeu, Oceania e América do Norte possuem os melhores scores de felicidade, como também os melhores PIBs Per Capita.
